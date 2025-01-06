@@ -1,0 +1,93 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "request": "launch",
+      "name": "Client",
+      "presentation": {
+        "group": "Mod Development - CustomCursor",
+        "order": 0
+      },
+      "projectName": "CustomCursor",
+      "mainClass": "net.neoforged.devlaunch.Main",
+      "args": [
+        "@G:\\IDEA Project BACKUP\\CustomCursor\\build\\moddev\\clientRunProgramArgs.txt"
+      ],
+      "vmArgs": [
+        "@G:\\IDEA Project BACKUP\\CustomCursor\\build\\moddev\\clientRunVmArgs.txt",
+        "-Dfml.modFolders\u003dcustomcursor%%G:\\IDEA Project BACKUP\\CustomCursor\\bin\\main"
+      ],
+      "cwd": "${workspaceFolder}\\run",
+      "env": {},
+      "console": "internalConsole",
+      "shortenCommandLine": "none"
+    },
+    {
+      "type": "java",
+      "request": "launch",
+      "name": "Data",
+      "presentation": {
+        "group": "Mod Development - CustomCursor",
+        "order": 1
+      },
+      "projectName": "CustomCursor",
+      "mainClass": "net.neoforged.devlaunch.Main",
+      "args": [
+        "@G:\\IDEA Project BACKUP\\CustomCursor\\build\\moddev\\dataRunProgramArgs.txt"
+      ],
+      "vmArgs": [
+        "@G:\\IDEA Project BACKUP\\CustomCursor\\build\\moddev\\dataRunVmArgs.txt",
+        "-Dfml.modFolders\u003dcustomcursor%%G:\\IDEA Project BACKUP\\CustomCursor\\bin\\main"
+      ],
+      "cwd": "${workspaceFolder}\\run",
+      "env": {},
+      "console": "internalConsole",
+      "shortenCommandLine": "none"
+    },
+    {
+      "type": "java",
+      "request": "launch",
+      "name": "GameTestServer",
+      "presentation": {
+        "group": "Mod Development - CustomCursor",
+        "order": 2
+      },
+      "projectName": "CustomCursor",
+      "mainClass": "net.neoforged.devlaunch.Main",
+      "args": [
+        "@G:\\IDEA Project BACKUP\\CustomCursor\\build\\moddev\\gameTestServerRunProgramArgs.txt"
+      ],
+      "vmArgs": [
+        "@G:\\IDEA Project BACKUP\\CustomCursor\\build\\moddev\\gameTestServerRunVmArgs.txt",
+        "-Dfml.modFolders\u003dcustomcursor%%G:\\IDEA Project BACKUP\\CustomCursor\\bin\\main"
+      ],
+      "cwd": "${workspaceFolder}\\run",
+      "env": {},
+      "console": "internalConsole",
+      "shortenCommandLine": "none"
+    },
+    {
+      "type": "java",
+      "request": "launch",
+      "name": "Server",
+      "presentation": {
+        "group": "Mod Development - CustomCursor",
+        "order": 3
+      },
+      "projectName": "CustomCursor",
+      "mainClass": "net.neoforged.devlaunch.Main",
+      "args": [
+        "@G:\\IDEA Project BACKUP\\CustomCursor\\build\\moddev\\serverRunProgramArgs.txt"
+      ],
+      "vmArgs": [
+        "@G:\\IDEA Project BACKUP\\CustomCursor\\build\\moddev\\serverRunVmArgs.txt",
+        "-Dfml.modFolders\u003dcustomcursor%%G:\\IDEA Project BACKUP\\CustomCursor\\bin\\main"
+      ],
+      "cwd": "${workspaceFolder}\\run",
+      "env": {},
+      "console": "internalConsole",
+      "shortenCommandLine": "none"
+    }
+  ]
+}
