@@ -8,6 +8,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import fr.atesab.customcursormod.common.handler.ResourceLocationCommon;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 
@@ -30,7 +32,9 @@ public class NeoForgeResourceLocationCommon extends ResourceLocationCommon {
 
 	@Override
 	public void bindForSetup() {
-		Minecraft.getInstance().getTextureManager().bindForSetup(resource);
+		TextureManager textureManager = Minecraft.getInstance().getTextureManager();
+		AbstractTexture texture = textureManager.getTexture(resource);
+		RenderSystem.setShaderTexture(0, texture.getId());
 	}
 
 	@Override

@@ -2,7 +2,7 @@ package fr.atesab.customcursormod.neoforge;
 
 import fr.atesab.customcursormod.common.handler.CommonShader;
 import fr.atesab.customcursormod.common.handler.CommonShaders;
-import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.CoreShaders;
 
 public class NeoForgeCommonShaders extends CommonShaders {
 
@@ -20,271 +20,271 @@ public class NeoForgeCommonShaders extends CommonShaders {
 
     @Override
     public CommonShader getPositionShader() {
-        return new NeoForgeCommonShader(GameRenderer::getPositionShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.POSITION);
     }
 
     @Override
     public CommonShader getPositionColorShader() {
-        return new NeoForgeCommonShader(GameRenderer::getPositionColorShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.POSITION_COLOR);
     }
 
     @Override
     public CommonShader getPositionColorTexShader() {
-        return new NeoForgeCommonShader(GameRenderer::getPositionTexColorShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.POSITION_COLOR_TEX_LIGHTMAP);
     }
 
     @Override
     public CommonShader getPositionTexShader() {
-        return new NeoForgeCommonShader(GameRenderer::getPositionTexShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.POSITION_TEX);
     }
 
     @Override
     public CommonShader getPositionTexColorShader() {
-        return new NeoForgeCommonShader(GameRenderer::getPositionTexColorShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.POSITION_TEX_COLOR);
     }
 
     @Override
     public CommonShader getBlockShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeSolidShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_SOLID);
     }
 
     @Override
     public CommonShader getNewEntityShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeEntitySolidShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_ENTITY_SOLID);
     }
 
     @Override
     public CommonShader getParticleShader() {
-        return new NeoForgeCommonShader(GameRenderer::getParticleShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.PARTICLE);
     }
 
     @Override
     public CommonShader getPositionColorLightmapShader() {
-        return new NeoForgeCommonShader(GameRenderer::getPositionColorLightmapShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.POSITION_COLOR_LIGHTMAP);
     }
 
     @Override
     public CommonShader getPositionColorTexLightmapShader() {
-        return new NeoForgeCommonShader(GameRenderer::getPositionColorTexLightmapShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.POSITION_COLOR_TEX_LIGHTMAP);
     }
 
     @Override
     public CommonShader getPositionTexColorNormalShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeCloudsShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_CLOUDS);
     }
 
     @Override
     public CommonShader getPositionTexLightmapColorShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeTextShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_TEXT);
     }
 
     @Override
     public CommonShader getRendertypeSolidShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeSolidShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_SOLID);
     }
 
     @Override
     public CommonShader getRendertypeCutoutMippedShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeCutoutMippedShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_CUTOUT_MIPPED);
     }
 
     @Override
     public CommonShader getRendertypeCutoutShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeCutoutShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_CUTOUT);
     }
 
     @Override
     public CommonShader getRendertypeTranslucentShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeTranslucentShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_TRANSLUCENT);
     }
 
     @Override
     public CommonShader getRendertypeTranslucentMovingBlockShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeTranslucentMovingBlockShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_TRANSLUCENT_MOVING_BLOCK);
     }
 
     @Override
     public CommonShader getRendertypeTranslucentNoCrumblingShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeCrumblingShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_CRUMBLING);
     }
 
     @Override
     public CommonShader getRendertypeArmorCutoutNoCullShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeArmorCutoutNoCullShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_ARMOR_CUTOUT_NO_CULL);
     }
 
     @Override
     public CommonShader getRendertypeEntitySolidShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeEntitySolidShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_ENTITY_SOLID);
     }
 
     @Override
     public CommonShader getRendertypeEntityCutoutShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeEntityCutoutShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_ENTITY_CUTOUT);
     }
 
     @Override
     public CommonShader getRendertypeEntityCutoutNoCullShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeEntityCutoutNoCullShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_ENTITY_CUTOUT_NO_CULL);
     }
 
     @Override
     public CommonShader getRendertypeEntityCutoutNoCullZOffsetShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeEntityCutoutNoCullZOffsetShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_ENTITY_CUTOUT_NO_CULL_Z_OFFSET);
     }
 
     @Override
     public CommonShader getRendertypeItemEntityTranslucentCullShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeItemEntityTranslucentCullShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_ITEM_ENTITY_TRANSLUCENT_CULL);
     }
 
     @Override
     public CommonShader getRendertypeEntityTranslucentCullShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeEntityTranslucentCullShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_ENTITY_TRANSLUCENT);
     }
 
     @Override
     public CommonShader getRendertypeEntityTranslucentShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeEntityTranslucentShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_ENTITY_TRANSLUCENT);
     }
 
     @Override
     public CommonShader getRendertypeEntitySmoothCutoutShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeEntitySmoothCutoutShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_ENTITY_SMOOTH_CUTOUT);
     }
 
     @Override
     public CommonShader getRendertypeBeaconBeamShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeBeaconBeamShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_BEACON_BEAM);
     }
 
     @Override
     public CommonShader getRendertypeEntityDecalShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeEntityDecalShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_ENTITY_DECAL);
     }
 
     @Override
     public CommonShader getRendertypeEntityNoOutlineShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeEntityNoOutlineShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_ENTITY_NO_OUTLINE);
     }
 
     @Override
     public CommonShader getRendertypeEntityShadowShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeEntityShadowShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_ENTITY_SHADOW);
     }
 
     @Override
     public CommonShader getRendertypeEntityAlphaShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeEntityAlphaShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_ENTITY_ALPHA);
     }
 
     @Override
     public CommonShader getRendertypeEyesShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeEyesShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_EYES);
     }
 
     @Override
     public CommonShader getRendertypeEnergySwirlShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeEnergySwirlShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_ENERGY_SWIRL);
     }
 
     @Override
     public CommonShader getRendertypeLeashShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeLeashShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_LEASH);
     }
 
     @Override
     public CommonShader getRendertypeWaterMaskShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeWaterMaskShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_WATER_MASK);
     }
 
     @Override
     public CommonShader getRendertypeOutlineShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeOutlineShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_OUTLINE);
     }
 
     @Override
     public CommonShader getRendertypeArmorGlintShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeArmorGlintShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_ARMOR_ENTITY_GLINT);
     }
 
     @Override
     public CommonShader getRendertypeArmorEntityGlintShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeArmorEntityGlintShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_ARMOR_ENTITY_GLINT);
     }
 
     @Override
     public CommonShader getRendertypeGlintTranslucentShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeGlintTranslucentShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_GLINT_TRANSLUCENT);
     }
 
     @Override
     public CommonShader getRendertypeGlintShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeGlintShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_GLINT);
     }
 
     @Override
     public CommonShader getRendertypeGlintDirectShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeGlintDirectShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_GLINT);
     }
 
     @Override
     public CommonShader getRendertypeEntityGlintShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeEntityGlintShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_ENTITY_GLINT);
     }
 
     @Override
     public CommonShader getRendertypeEntityGlintDirectShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeEntityGlintDirectShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_ENTITY_GLINT);
     }
 
     @Override
     public CommonShader getRendertypeTextShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeTextShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_TEXT);
     }
 
     @Override
     public CommonShader getRendertypeTextIntensityShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeTextIntensityShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_TEXT_INTENSITY);
     }
 
     @Override
     public CommonShader getRendertypeTextSeeThroughShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeTextSeeThroughShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_TEXT_SEE_THROUGH);
     }
 
     @Override
     public CommonShader getRendertypeTextIntensitySeeThroughShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeTextIntensitySeeThroughShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_TEXT_INTENSITY_SEE_THROUGH);
     }
 
     @Override
     public CommonShader getRendertypeLightningShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeLightningShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_LIGHTNING);
     }
 
     @Override
     public CommonShader getRendertypeTripwireShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeTripwireShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_TRIPWIRE);
     }
 
     @Override
     public CommonShader getRendertypeEndPortalShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeEndPortalShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_END_PORTAL);
     }
 
     @Override
     public CommonShader getRendertypeEndGatewayShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeEndGatewayShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_END_GATEWAY);
     }
 
     @Override
     public CommonShader getRendertypeLinesShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeLinesShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_LINES);
     }
 
     @Override
     public CommonShader getRendertypeCrumblingShader() {
-        return new NeoForgeCommonShader(GameRenderer::getRendertypeCrumblingShader);
+        return new NeoForgeCommonShader(() -> CoreShaders.RENDERTYPE_CRUMBLING);
     }
 }
