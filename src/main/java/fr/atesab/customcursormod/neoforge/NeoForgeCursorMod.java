@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.texture.AbstractTexture;
 
 import fr.atesab.customcursormod.common.CursorMod;
 import fr.atesab.customcursormod.common.config.CursorConfig;
@@ -255,10 +256,17 @@ public class NeoForgeCursorMod {
 				int posX = (int) cursorClick.getPosX();
 				int posY = (int) cursorClick.getPosY();
 				NeoForgeGuiUtils.getForge().setShader(NeoForgeCommonShaders.getForge().getPositionTexShader());
-				RenderSystem.setShaderTexture(0,
-						ResourceLocation.fromNamespaceAndPath("customcursormod", "textures/gui/click_" + cursorClick.getImage() + ".png"));
-				NeoForgeGuiUtils.getForge().drawScaledCustomSizeModalRect(posX - 8, posY - 8, 0, 0, 16, 16, 16, 16, 16, 16,
-						0xffffffff, true);
+				
+				// 瞎几把乱写了一下，IDEA没编译报错就摆了。但是不知道这样对不对，新版本把ResourceLocation传参换成了GpuTexture（
+				ResourceLocation clickTexture = ResourceLocation.tryParse("customcursormod:textures/gui/click_" + cursorClick.getImage() + ".png");
+				if (clickTexture != null) {
+					AbstractTexture texture = Minecraft.getInstance().getTextureManager().getTexture(clickTexture);
+					RenderSystem.setShaderTexture(0, texture.getTexture());
+					
+					NeoForgeGuiUtils.getForge().drawScaledCustomSizeModalRect(posX - 8, posY - 8, 0, 0, 16, 16, 16, 16, 16, 16,
+							0xffffffff, true);
+				}
+				
 				cursorClick.descreaseTime(ev.getPartialTick());
 				if (cursorClick.getTime() <= 0) {
 					iterator.remove();
