@@ -4,11 +4,11 @@ import java.util.function.Supplier;
 
 import fr.atesab.customcursormod.common.handler.BasicHandler;
 import fr.atesab.customcursormod.common.handler.CommonShader;
-import net.minecraft.client.renderer.ShaderProgram;
+import com.mojang.blaze3d.pipeline.RenderPipeline;
 
-public class NeoForgeCommonShader extends BasicHandler<Supplier<ShaderProgram>> implements CommonShader {
+public class NeoForgeCommonShader extends BasicHandler<Supplier<RenderPipeline>> implements CommonShader {
 
-    public NeoForgeCommonShader(Supplier<ShaderProgram> handle) {
+    public NeoForgeCommonShader(Supplier<RenderPipeline> handle) {
         super(handle);
     }
 
