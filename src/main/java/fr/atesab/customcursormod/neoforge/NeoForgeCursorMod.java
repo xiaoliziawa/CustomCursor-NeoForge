@@ -2,7 +2,6 @@ package fr.atesab.customcursormod.neoforge;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.textures.GpuTexture;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import fr.atesab.customcursormod.common.CursorMod;
 import fr.atesab.customcursormod.common.config.CursorConfig;
 import fr.atesab.customcursormod.common.cursor.CursorClick;
