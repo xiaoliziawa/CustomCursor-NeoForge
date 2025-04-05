@@ -27,14 +27,16 @@ public class NeoForgeResourceLocationCommon extends ResourceLocationCommon {
 
 	@Override
 	public void setShaderTexture() {
-		RenderSystem.setShaderTexture(0, resource);
+		TextureManager textureManager = Minecraft.getInstance().getTextureManager();
+		AbstractTexture texture = textureManager.getTexture(resource);
+		RenderSystem.setShaderTexture(0, texture.getTexture());
 	}
 
 	@Override
 	public void bindForSetup() {
 		TextureManager textureManager = Minecraft.getInstance().getTextureManager();
 		AbstractTexture texture = textureManager.getTexture(resource);
-		RenderSystem.setShaderTexture(0, texture.getId());
+		RenderSystem.setShaderTexture(0, texture.getTexture());
 	}
 
 	@Override
