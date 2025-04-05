@@ -104,6 +104,7 @@ public class CursorConfig {
 		try {
 			return getResourceLocation().openStream();
 		} catch (Exception e) {
+			e.printStackTrace();
 			return null;
 		}
 

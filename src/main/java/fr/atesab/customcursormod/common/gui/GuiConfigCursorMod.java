@@ -60,7 +60,6 @@ public class GuiConfigCursorMod extends ScreenListener {
 			var gutils = GuiUtils.get();
 			gutils.drawGradientRect(stack, getScreen().getBlitOffset(), posX, posY, posX + 20, posY + 20, -1072689136,
 					-804253680);
-			gutils.setShader(CommonShaders.get().getPositionTexShader());
 			cursorConfig.getResourceLocation().setShaderTexture();
 			gutils.drawScaledCustomSizeModalRect(posX, posY, 0, 0, imageWidth, imageHeight, 20, 20, imageWidth,
 					imageHeight * numImage, 0xffffffff, true);
