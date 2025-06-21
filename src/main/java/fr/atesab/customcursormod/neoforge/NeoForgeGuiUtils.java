@@ -93,7 +93,7 @@ public class NeoForgeGuiUtils extends GuiUtils {
         float blueRightBottom = (float) (rightBottomColor & 255) / 255.0F;
 
         MultiBufferSource.BufferSource bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();
-        VertexConsumer vertexBuffer = bufferSource.getBuffer(RenderType.gui());
+        VertexConsumer vertexBuffer = bufferSource.getBuffer(RenderType.debugQuads());
 
 
         vertexBuffer.addVertex((float) right, (float) top, zLevel)
@@ -117,6 +117,7 @@ public class NeoForgeGuiUtils extends GuiUtils {
 
     @Override
     public void setShaderColor(float r, float g, float b, float a) {
-        RenderSystem.setShaderColor(r, g, b, a);
+        // Note: setShaderColor method has been removed in MC 1.21.6
+        // Color is now handled directly through vertex data in the new render pipeline
     }
 }

@@ -6,6 +6,7 @@ import fr.atesab.customcursormod.common.handler.CommonText;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.render.state.GuiRenderState;
 
 public class NeoForgeCommonButton extends CommonButton {
 	public final Button handle;
@@ -93,7 +94,7 @@ public class NeoForgeCommonButton extends CommonButton {
 
 	@Override
 	public void render(CommonMatrixStack stack, int mouseX, int mouseY, float partialTicks) {
-		GuiGraphics guiGraphics = new GuiGraphics(Minecraft.getInstance(), Minecraft.getInstance().renderBuffers().bufferSource());
+		GuiGraphics guiGraphics = new GuiGraphics(Minecraft.getInstance(), new GuiRenderState());
 		handle.render(guiGraphics, mouseX, mouseY, partialTicks);
 	}
 

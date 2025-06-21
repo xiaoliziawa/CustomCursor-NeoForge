@@ -5,6 +5,7 @@ import fr.atesab.customcursormod.common.handler.CommonTextField;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.render.state.GuiRenderState;
 import net.minecraft.network.chat.Component;
 
 public class NeoForgeCommonTextField extends CommonTextField {
@@ -103,11 +104,10 @@ public class NeoForgeCommonTextField extends CommonTextField {
 
 	@Override
 	public void render(CommonMatrixStack stack, int mouseX, int mouseY, float partialTicks) {
-		GuiGraphics guiGraphics = new GuiGraphics(Minecraft.getInstance(), Minecraft.getInstance().renderBuffers().bufferSource());
-		guiGraphics.pose().pushPose();
+		GuiGraphics guiGraphics = new GuiGraphics(Minecraft.getInstance(), new GuiRenderState());
+		guiGraphics.pose().pushMatrix();
 		handle.render(guiGraphics, mouseX, mouseY, partialTicks);
-		guiGraphics.pose().popPose();
-		Minecraft.getInstance().renderBuffers().bufferSource().endBatch();
+		guiGraphics.pose().popMatrix();
 	}
 
 	@Override

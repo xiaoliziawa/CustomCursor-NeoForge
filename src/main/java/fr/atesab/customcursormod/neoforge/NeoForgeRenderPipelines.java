@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.ResourceLocation;
 
 public class NeoForgeRenderPipelines {
-    public static final RenderPipeline.Snippet CURSOR_SNIPPET = RenderPipeline.builder(RenderPipelines.MATRICES_COLOR_SNIPPET)
+    public static final RenderPipeline.Snippet CURSOR_SNIPPET = RenderPipeline.builder(RenderPipelines.GUI_TEXTURED_SNIPPET)
             .withVertexShader("core/position_tex_color")
             .withFragmentShader("core/position_tex_color")
             .withSampler("Sampler0")

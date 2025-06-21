@@ -4,7 +4,6 @@ import net.minecraft.Util;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.TriState;
 
 import java.util.function.Function;
 
@@ -23,7 +22,7 @@ public class NeoForgeRenderTypes {
                     2048,
                     NeoForgeRenderPipelines.CURSOR,
                     RenderType.CompositeState.builder()
-                            .setTextureState(new RenderStateShard.TextureStateShard(resourceLocation, TriState.FALSE, false))
+                            .setTextureState(new RenderStateShard.TextureStateShard(resourceLocation, false))
                             .createCompositeState(false)
             )
     );

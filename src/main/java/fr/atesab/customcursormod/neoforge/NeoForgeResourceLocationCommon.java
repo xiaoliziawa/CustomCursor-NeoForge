@@ -1,9 +1,10 @@
 package fr.atesab.customcursormod.neoforge;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.textures.GpuTexture;
+import com.mojang.blaze3d.textures.GpuTextureView;
 import fr.atesab.customcursormod.common.handler.ResourceLocationCommon;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 
@@ -15,7 +16,7 @@ public class NeoForgeResourceLocationCommon extends ResourceLocationCommon {
 
     private final ResourceLocation resource;
 
-    private GpuTexture texture;
+    private GpuTextureView textureView;
 
     public NeoForgeResourceLocationCommon(String link) {
         resource = ResourceLocation.parse(link);
@@ -27,23 +28,24 @@ public class NeoForgeResourceLocationCommon extends ResourceLocationCommon {
     }
 
     private void bindTexture() {
-        texture = Minecraft.getInstance().getTextureManager().getTexture(resource).getTexture();
+        AbstractTexture abstractTexture = Minecraft.getInstance().getTextureManager().getTexture(resource);
+        textureView = abstractTexture.getTextureView();
     }
 
     @Override
     public void setShaderTexture() {
-        if (texture == null) {
+        if (textureView == null) {
             bindTexture();
         }
-        RenderSystem.setShaderTexture(0, texture);
+        RenderSystem.setShaderTexture(0, textureView);
     }
 
     @Override
     public void bindForSetup() {
-        if (texture == null) {
+        if (textureView == null) {
             bindTexture();
         }
-        RenderSystem.setShaderTexture(0, texture);
+        RenderSystem.setShaderTexture(0, textureView);
     }
 
     @Override
