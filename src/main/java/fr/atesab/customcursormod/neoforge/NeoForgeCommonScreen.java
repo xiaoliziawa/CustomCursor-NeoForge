@@ -2,7 +2,10 @@ package fr.atesab.customcursormod.neoforge;
 
 import fr.atesab.customcursormod.common.handler.CommonMatrixStack;
 import fr.atesab.customcursormod.common.handler.CommonScreen;
+import fr.atesab.customcursormod.common.CursorMod;
 import fr.atesab.customcursormod.common.handler.CommonElement;
+import fr.atesab.customcursormod.common.handler.CommonButton;
+import fr.atesab.customcursormod.common.handler.CommonButtonValue;
 import fr.atesab.customcursormod.common.handler.GameType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -43,51 +46,40 @@ public class NeoForgeCommonScreen extends CommonScreen {
 
 		@Override
 		protected void init() {
-			super.init();
+			super.init(); // 这会清除所有现有的组件
 			
-			// 直接设置listener的尺寸字段，因为ScreenListener.resize()是空实现
-			try {
-				java.lang.reflect.Field widthField = listener.getClass().getSuperclass().getDeclaredField("width");
-				java.lang.reflect.Field heightField = listener.getClass().getSuperclass().getDeclaredField("height");
-				widthField.setAccessible(true);
-				heightField.setAccessible(true);
-				widthField.set(listener, width);
-				heightField.set(listener, height);
-				System.out.println("Set listener dimensions to: " + width + "x" + height);
-			} catch (Exception e) {
-				System.err.println("Failed to set listener dimensions: " + e.getMessage());
-			}
+			// 使用CommonScreen的resize方法来设置尺寸，无需反射
+			listener.getScreen().resize(width, height);
 			
-			// 让listener创建所有组件（这会清理旧组件并创建新组件）
-			listener.init();
+			// 调用CommonScreen.init()而不是listener.init()，确保childrens.clear()被执行
+			listener.getScreen().init(); // 这会清除CommonScreen.childrens并重新创建组件
 			
 			// 现在添加所有创建的组件到Screen的管理系统
-			// 注意：super.init()已经调用了clearWidgets()，所以不会有重复组件
+			// super.init()已经调用了clearWidgets()，确保没有重复组件
 			CommonScreen commonScreen = listener.getScreen();
-			System.out.println("Adding " + commonScreen.childrens.size() + " elements to screen");
 			
 			for (CommonElement element : commonScreen.childrens) {
 				if (element instanceof NeoForgeCommonButton button) {
-					System.out.println("Adding button: " + button.getMessage().getString() + " at: " + button.getXPosition() + "," + button.getYPosition());
 					this.addRenderableWidget(button.handle);
 				} else if (element instanceof NeoForgeCommonTextField textField) {
-					System.out.println("Adding textfield at: " + textField.getXPosition() + "," + textField.getYPosition());
 					this.addRenderableWidget(textField.handle);
+				} else if (element instanceof CommonButtonValue<?> buttonValue) {
+					// 使用公开的getter方法，无需反射
+					CommonButton handle = buttonValue.getHandle();
+					if (handle instanceof NeoForgeCommonButton neoForgeButton) {
+						this.addRenderableWidget(neoForgeButton.handle);
+					}
 				}
 			}
-			
-			System.out.println("Total renderables in screen: " + this.renderables.size());
 		}
 
 		@Override
 		public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-			// 存储当前的GuiGraphics实例供其他方法使用
 			this.currentGuiGraphics = guiGraphics;
 			
-			// 让Screen处理标准组件渲染（包括我们添加的按钮）
 			super.render(guiGraphics, mouseX, mouseY, partialTicks);
 			
-			// 处理自定义渲染（标题、文本等）
+			// 使用独立的PoseStack进行自定义渲染，不依赖GuiGraphics
 			if (this.minecraft != null) {
 				PoseStack poseStack = new PoseStack();
 				CommonMatrixStack stack = new NeoForgeCommonMatrixStack(poseStack);
@@ -113,7 +105,12 @@ public class NeoForgeCommonScreen extends CommonScreen {
 
 		@Override
 		public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
-			return listener.mouseClicked(mouseX, mouseY, mouseButton) || super.mouseClicked(mouseX, mouseY, mouseButton);
+			// 先调用super.mouseClicked来处理原生组件（文本框等）
+			boolean superHandled = super.mouseClicked(mouseX, mouseY, mouseButton);
+			// 然后调用listener的处理
+			boolean listenerHandled = listener.mouseClicked(mouseX, mouseY, mouseButton);
+			// 只要任一处理了就返回true
+			return superHandled || listenerHandled;
 		}
 
 		@Override

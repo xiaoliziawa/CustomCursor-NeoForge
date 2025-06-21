@@ -12,18 +12,15 @@ import fr.atesab.customcursormod.common.handler.*;
 import fr.atesab.customcursormod.neoforge.NeoForgeCommonScreen.ForgeCommonScreenHandler;
 import fr.atesab.customcursormod.neoforge.gui.NeoForgeGuiSelectZone;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
@@ -265,7 +262,7 @@ public class NeoForgeCursorMod {
                 
                 try {
                     // 使用GuiGraphics渲染而不是旧的方法
-                    ResourceLocation texture = ResourceLocation.fromNamespaceAndPath("customcursormod", "textures/gui/click_" + cursorClick.getImage() + ".png");
+                    ResourceLocation texture = ResourceLocation.withDefaultNamespace("textures/gui/click_" + cursorClick.getImage() + ".png");
                     ev.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, texture, posX - 8, posY - 8, 0, 0, 16, 16, 16, 16);
                 } catch (Exception e) {
                     // 静默处理异常，避免日志垃圾信息
@@ -298,10 +295,8 @@ public class NeoForgeCursorMod {
 
     @SubscribeEvent
     public void onMouseClicked(ScreenEvent.MouseButtonPressed.Pre ev) {
-        System.out.println("Mouse clicked - Button: " + ev.getButton() + ", ClickAnimation enabled: " + mod.getConfig().clickAnimation);
         if (ev.getButton() == 0 && mod.getConfig().clickAnimation) {
             mod.getCursorClicks().add(new CursorClick(ev.getMouseX(), ev.getMouseY()));
-            System.out.println("Added click animation at: " + ev.getMouseX() + ", " + ev.getMouseY() + " - Total clicks: " + mod.getCursorClicks().size());
         }
     }
 

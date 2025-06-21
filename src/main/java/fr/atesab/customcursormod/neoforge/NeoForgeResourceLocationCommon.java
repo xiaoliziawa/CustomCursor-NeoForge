@@ -38,6 +38,8 @@ public class NeoForgeResourceLocationCommon extends ResourceLocationCommon {
             bindTexture();
         }
         RenderSystem.setShaderTexture(0, textureView);
+        // 设置当前纹理给自定义渲染管道
+        NeoForgeGuiUtils.setCurrentTexture(resource);
     }
 
     @Override
