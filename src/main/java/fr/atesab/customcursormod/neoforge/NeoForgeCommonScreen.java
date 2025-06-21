@@ -21,7 +21,7 @@ public class NeoForgeCommonScreen extends CommonScreen {
 	public static class ForgeCommonScreenHandler extends Screen {
 
 		private final ScreenListener listener;
-		private GuiGraphics currentGuiGraphics; // 存储当前的GuiGraphics实例
+		private GuiGraphics currentGuiGraphics;
 
 		public ForgeCommonScreenHandler(Component title, ScreenListener listener) {
 			super(title);
@@ -46,16 +46,12 @@ public class NeoForgeCommonScreen extends CommonScreen {
 
 		@Override
 		protected void init() {
-			super.init(); // 这会清除所有现有的组件
+			super.init();
 			
-			// 使用CommonScreen的resize方法来设置尺寸，无需反射
 			listener.getScreen().resize(width, height);
 			
-			// 调用CommonScreen.init()而不是listener.init()，确保childrens.clear()被执行
-			listener.getScreen().init(); // 这会清除CommonScreen.childrens并重新创建组件
+			listener.getScreen().init();
 			
-			// 现在添加所有创建的组件到Screen的管理系统
-			// super.init()已经调用了clearWidgets()，确保没有重复组件
 			CommonScreen commonScreen = listener.getScreen();
 			
 			for (CommonElement element : commonScreen.childrens) {
@@ -64,7 +60,6 @@ public class NeoForgeCommonScreen extends CommonScreen {
 				} else if (element instanceof NeoForgeCommonTextField textField) {
 					this.addRenderableWidget(textField.handle);
 				} else if (element instanceof CommonButtonValue<?> buttonValue) {
-					// 使用公开的getter方法，无需反射
 					CommonButton handle = buttonValue.getHandle();
 					if (handle instanceof NeoForgeCommonButton neoForgeButton) {
 						this.addRenderableWidget(neoForgeButton.handle);
@@ -79,7 +74,6 @@ public class NeoForgeCommonScreen extends CommonScreen {
 			
 			super.render(guiGraphics, mouseX, mouseY, partialTicks);
 			
-			// 使用独立的PoseStack进行自定义渲染，不依赖GuiGraphics
 			if (this.minecraft != null) {
 				PoseStack poseStack = new PoseStack();
 				CommonMatrixStack stack = new NeoForgeCommonMatrixStack(poseStack);
@@ -105,11 +99,8 @@ public class NeoForgeCommonScreen extends CommonScreen {
 
 		@Override
 		public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
-			// 先调用super.mouseClicked来处理原生组件（文本框等）
 			boolean superHandled = super.mouseClicked(mouseX, mouseY, mouseButton);
-			// 然后调用listener的处理
 			boolean listenerHandled = listener.mouseClicked(mouseX, mouseY, mouseButton);
-			// 只要任一处理了就返回true
 			return superHandled || listenerHandled;
 		}
 
