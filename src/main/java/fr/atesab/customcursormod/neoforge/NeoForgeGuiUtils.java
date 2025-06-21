@@ -16,7 +16,6 @@ public class NeoForgeGuiUtils extends GuiUtils {
 
     private static final NeoForgeGuiUtils instance = new NeoForgeGuiUtils();
     
-    // 静态变量存储当前的纹理资源位置
     private static ResourceLocation currentTexture;
 
     /**
@@ -61,40 +60,32 @@ public class NeoForgeGuiUtils extends GuiUtils {
 
         MultiBufferSource.BufferSource bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();
         
-        // 使用自定义的CURSOR_TEXTURED渲染类型（如果有纹理）
         RenderType renderType = currentTexture != null ? 
             NeoForgeRenderTypes.CURSOR_TEXTURED.apply(currentTexture) : 
             NeoForgeRenderTypes.CURSOR;
         VertexConsumer vertexBuffer = bufferSource.getBuffer(renderType);
 
-        // 计算UV坐标 - 直接使用像素坐标除以纹理尺寸
         float u0 = u / tileWidth;
         float v0 = v / tileHeight;
         float u1 = (u + (float)uWidth) / tileWidth;
         float v1 = (v + (float)vHeight) / tileHeight;
 
-        // 绘制四个顶点（QUADS模式）
-        // 左下角
         vertexBuffer.addVertex((float) x, (float) (y + height), 0.0F)
                 .setUv(u0, v1)
                 .setColor(red, green, blue, alpha);
 
-        // 右下角
         vertexBuffer.addVertex((float) (x + width), (float) (y + height), 0.0F)
                 .setUv(u1, v1)
                 .setColor(red, green, blue, alpha);
 
-        // 右上角
         vertexBuffer.addVertex((float) (x + width), (float) y, 0.0F)
                 .setUv(u1, v0)
                 .setColor(red, green, blue, alpha);
 
-        // 左上角
         vertexBuffer.addVertex((float) x, (float) y, 0.0F)
                 .setUv(u0, v0)
                 .setColor(red, green, blue, alpha);
 
-        // 刷新缓冲区以确保渲染
         bufferSource.endBatch();
     }
 
@@ -134,7 +125,6 @@ public class NeoForgeGuiUtils extends GuiUtils {
         vertexBuffer.addVertex((float) right, (float) bottom, zLevel)
                 .setColor(redRightBottom, greenRightBottom, blueRightBottom, alphaRightBottom);
 
-        // 刷新缓冲区以确保渲染
         bufferSource.endBatch();
     }
 

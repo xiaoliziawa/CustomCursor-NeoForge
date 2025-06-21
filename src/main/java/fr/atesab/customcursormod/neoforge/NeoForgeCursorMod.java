@@ -252,7 +252,6 @@ public class NeoForgeCursorMod {
         mod.changeCursor(newCursorType);
 
 
-        // 使用新的GuiGraphics渲染点击动画
         if (mod.getConfig().clickAnimation) {
             Iterator<CursorClick> iterator = mod.getCursorClicks().iterator();
             while (iterator.hasNext()) {
@@ -261,11 +260,10 @@ public class NeoForgeCursorMod {
                 int posY = (int) cursorClick.getPosY();
                 
                 try {
-                    // 使用GuiGraphics渲染而不是旧的方法
                     ResourceLocation texture = ResourceLocation.withDefaultNamespace("textures/gui/click_" + cursorClick.getImage() + ".png");
                     ev.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, texture, posX - 8, posY - 8, 0, 0, 16, 16, 16, 16);
                 } catch (Exception e) {
-                    // 静默处理异常，避免日志垃圾信息
+                    // 静默处理异常
                 }
 
                 cursorClick.descreaseTime(ev.getPartialTick());
