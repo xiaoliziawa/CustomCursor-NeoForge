@@ -5,7 +5,9 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import fr.atesab.customcursormod.common.handler.CommonMatrixStack;
 import fr.atesab.customcursormod.common.handler.GuiUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 
@@ -17,6 +19,7 @@ public class NeoForgeGuiUtils extends GuiUtils {
     private static final NeoForgeGuiUtils instance = new NeoForgeGuiUtils();
     
     private static ResourceLocation currentTexture;
+    private static GuiGraphics currentGuiGraphics;
 
     /**
      * @return the instance
@@ -30,6 +33,13 @@ public class NeoForgeGuiUtils extends GuiUtils {
      */
     public static void setCurrentTexture(ResourceLocation texture) {
         currentTexture = texture;
+    }
+    
+    /**
+     * 设置当前的GuiGraphics实例
+     */
+    public static void setCurrentGuiGraphics(GuiGraphics guiGraphics) {
+        currentGuiGraphics = guiGraphics;
     }
 
     /**
@@ -50,43 +60,13 @@ public class NeoForgeGuiUtils extends GuiUtils {
      * @param color            tile color
      * @param useAlpha         use the alpha of the color
      */
-    @Override
+        @Override
     public void drawScaledCustomSizeModalRect(int x, int y, float u, float v, int uWidth, int vHeight, int width,
                                               int height, float tileWidth, float tileHeight, int color, boolean useAlpha) {
-        int red = (color >> 16) & 0xFF;
-        int green = (color >> 8) & 0xFF;
-        int blue = color & 0xFF;
-        int alpha = useAlpha ? (color >> 24) & 0xFF : 255;
-
-        MultiBufferSource.BufferSource bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();
-        
-        RenderType renderType = currentTexture != null ? 
-            NeoForgeRenderTypes.CURSOR_TEXTURED.apply(currentTexture) : 
-            NeoForgeRenderTypes.CURSOR;
-        VertexConsumer vertexBuffer = bufferSource.getBuffer(renderType);
-
-        float u0 = u / tileWidth;
-        float v0 = v / tileHeight;
-        float u1 = (u + (float)uWidth) / tileWidth;
-        float v1 = (v + (float)vHeight) / tileHeight;
-
-        vertexBuffer.addVertex((float) x, (float) (y + height), 0.0F)
-                .setUv(u0, v1)
-                .setColor(red, green, blue, alpha);
-
-        vertexBuffer.addVertex((float) (x + width), (float) (y + height), 0.0F)
-                .setUv(u1, v1)
-                .setColor(red, green, blue, alpha);
-
-        vertexBuffer.addVertex((float) (x + width), (float) y, 0.0F)
-                .setUv(u1, v0)
-                .setColor(red, green, blue, alpha);
-
-        vertexBuffer.addVertex((float) x, (float) y, 0.0F)
-                .setUv(u0, v0)
-                .setColor(red, green, blue, alpha);
-
-        bufferSource.endBatch();
+        if (currentGuiGraphics != null && currentTexture != null) {
+            currentGuiGraphics.blit(RenderPipelines.GUI_TEXTURED,
+                currentTexture, x, y, u, v, width, height, uWidth, vHeight, (int)tileWidth, (int)tileHeight, color);
+        }
     }
 
     @Override
@@ -135,7 +115,6 @@ public class NeoForgeGuiUtils extends GuiUtils {
 
     @Override
     public void setShaderColor(float r, float g, float b, float a) {
-        // Note: setShaderColor method has been removed in MC 1.21.6
-        // Color is now handled directly through vertex data in the new render pipeline
+        // Color is handled directly through vertex data in MC 1.21.6
     }
 }

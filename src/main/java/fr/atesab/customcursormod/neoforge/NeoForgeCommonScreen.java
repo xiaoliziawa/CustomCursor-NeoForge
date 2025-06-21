@@ -72,6 +72,8 @@ public class NeoForgeCommonScreen extends CommonScreen {
 		public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 			this.currentGuiGraphics = guiGraphics;
 			
+			NeoForgeGuiUtils.setCurrentGuiGraphics(guiGraphics);
+			
 			super.render(guiGraphics, mouseX, mouseY, partialTicks);
 			
 			if (this.minecraft != null) {
@@ -153,9 +155,13 @@ public class NeoForgeCommonScreen extends CommonScreen {
 
 	@Override
 	public void renderDefaultBackground(CommonMatrixStack stack) {
-		// 在1.21.6中，背景渲染由Screen.renderWithTooltip()自动处理
-		// 不需要手动调用背景渲染，避免重复模糊调用
-		// 这里保持空操作即可
+		// 确保背景正确渲染
+		if (handle.getCurrentGuiGraphics() != null) {
+			if (Minecraft.getInstance().level != null) {
+				handle.getCurrentGuiGraphics().fillGradient(0, 0, handle.width, handle.height, 
+					0xC0101010, 0xD0101010);
+			}
+		}
 	}
 
 	@Override
@@ -165,8 +171,13 @@ public class NeoForgeCommonScreen extends CommonScreen {
 
 	@Override
 	public void drawString(CommonMatrixStack stack, String text, float x, float y, int color) {
-		if (handle.getCurrentGuiGraphics() != null) {
-			handle.getCurrentGuiGraphics().drawString(handle.getTextRenderer(), text, (int)x, (int)y, color);
+		GuiGraphics guiGraphics = handle.getCurrentGuiGraphics();
+		if (guiGraphics != null) {
+			guiGraphics.drawString(handle.getTextRenderer(), text, (int)x, (int)y, color);
+		} else {
+			GuiGraphics fallbackGraphics = new GuiGraphics(Minecraft.getInstance(), 
+				new GuiRenderState());
+			fallbackGraphics.drawString(handle.getTextRenderer(), text, (int)x, (int)y, color);
 		}
 	}
 
