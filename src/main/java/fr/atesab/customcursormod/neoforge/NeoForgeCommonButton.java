@@ -9,17 +9,66 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.render.state.GuiRenderState;
 
 public class NeoForgeCommonButton extends CommonButton {
-	public final Button handle;
+	
+	// 自定义Button类，覆盖render方法
+	public static class CustomButton extends Button {
+		private final NeoForgeCommonButton parent;
+		
+		public CustomButton(NeoForgeCommonButton parent, CommonButtonObject obj) {
+			super(obj.xPosition, obj.yPosition, obj.width, obj.height, 
+				  obj.message.getHandle(), b -> obj.action.accept(parent), DEFAULT_NARRATION);
+			this.parent = parent;
+		}
+		
+		@Override
+		public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+			if (!visible) return;
+			
+			// 检查鼠标是否悬停在按钮上
+			boolean hovered = mouseX >= getX() && mouseY >= getY() && 
+			                  mouseX < getX() + getWidth() && 
+			                  mouseY < getY() + getHeight();
+			
+			// 自定义按钮背景
+			NeoForgeGuiUtils.drawRoundedButton(guiGraphics, getX(), getY(), 
+			                                  getWidth(), getHeight(), 
+			                                  hovered, active);
+			// 绘制按钮文本
+			String text = getMessage().getString();
+			Minecraft minecraft = Minecraft.getInstance();
+			int textColor;
+			
+			if (!active) {
+				// 禁用状态：暗灰色
+				textColor = 0xFF404040;
+			} else if (hovered) {
+				// 悬停状态：亮蓝白色
+				textColor = 0xFFe6e6ff;
+			} else {
+				// 正常状态：明亮的浅灰色
+				textColor = 0xFFe0e0e0;
+			}
+			// 计算文本居中位置
+			int textX = getX() + (getWidth() - minecraft.font.width(text)) / 2;
+			int textY = getY() + (getHeight() - minecraft.font.lineHeight) / 2;
+			// 绘制文本阴影
+			if (active) {
+				guiGraphics.drawString(minecraft.font, text, textX + 1, textY + 1, 0x80000000);
+			}
+			// 绘制文本
+			guiGraphics.drawString(minecraft.font, text, textX, textY, textColor);
+		}
+	}
+	
+	public final CustomButton handle;
 
 	public NeoForgeCommonButton(CommonButtonObject obj) {
-		handle = Button.builder(obj.message.getHandle(), b -> obj.action.accept(this))
-			.pos(obj.xPosition, obj.yPosition)
-			.size(obj.width, obj.height)
-			.build();
+		handle = new CustomButton(this, obj);
 	}
 
 	public NeoForgeCommonButton(Button handle) {
-		this.handle = handle;
+		// 这个构造函数不应该被使用，因为我们需要自定义Button
+		throw new UnsupportedOperationException("Use NeoForgeCommonButton(CommonButtonObject) constructor instead");
 	}
 
 	@Override
@@ -94,8 +143,7 @@ public class NeoForgeCommonButton extends CommonButton {
 
 	@Override
 	public void render(CommonMatrixStack stack, int mouseX, int mouseY, float partialTicks) {
-		GuiGraphics guiGraphics = new GuiGraphics(Minecraft.getInstance(), new GuiRenderState());
-		handle.render(guiGraphics, mouseX, mouseY, partialTicks);
+		// 现在由CustomButton.renderWidget处理渲染，这个方法不再需要
 	}
 
 	@Override

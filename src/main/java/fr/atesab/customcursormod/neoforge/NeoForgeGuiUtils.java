@@ -1,6 +1,5 @@
 package fr.atesab.customcursormod.neoforge;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import fr.atesab.customcursormod.common.handler.CommonMatrixStack;
 import fr.atesab.customcursormod.common.handler.GuiUtils;
@@ -116,5 +115,154 @@ public class NeoForgeGuiUtils extends GuiUtils {
     @Override
     public void setShaderColor(float r, float g, float b, float a) {
         // Color is handled directly through vertex data in MC 1.21.6
+    }
+    
+    /**
+     *
+     * @param guiGraphics GuiGraphics实例
+     * @param x 左上角X坐标
+     * @param y 左上角Y坐标
+     * @param width 宽度
+     * @param height 高度
+     * @param radius 圆角半径
+     * @param color 颜色 (ARGB格式)
+     */
+    public static void drawRoundedRect(GuiGraphics guiGraphics, int x, int y, int width, int height, int radius, int color) {
+        if (radius <= 0) {
+            guiGraphics.fill(x, y, x + width, y + height, color);
+            return;
+        }
+        radius = Math.min(radius, Math.min(width / 2, height / 2));
+        guiGraphics.fill(x + radius, y, x + width - radius, y + height, color);
+        guiGraphics.fill(x, y + radius, x + radius, y + height - radius, color);
+        guiGraphics.fill(x + width - radius, y + radius, x + width, y + height - radius, color);
+        drawQuarterCircle(guiGraphics, x + radius, y + radius, radius, color, 0); // 左上
+        drawQuarterCircle(guiGraphics, x + width - radius, y + radius, radius, color, 1); // 右上
+        drawQuarterCircle(guiGraphics, x + radius, y + height - radius, radius, color, 2); // 左下
+        drawQuarterCircle(guiGraphics, x + width - radius, y + height - radius, radius, color, 3); // 右下
+    }
+    
+    /**
+     *
+     * @param guiGraphics GuiGraphics实例
+     * @param centerX 圆心X坐标
+     * @param centerY 圆心Y坐标
+     * @param radius 半径
+     * @param color 颜色
+     * @param corner 角落 (0=左上, 1=右上, 2=左下, 3=右下)
+     */
+    private static void drawQuarterCircle(GuiGraphics guiGraphics, int centerX, int centerY, int radius, int color, int corner) {
+        for (int i = 0; i <= radius; i++) {
+            for (int j = 0; j <= radius; j++) {
+                if (i * i + j * j <= radius * radius) {
+                    int pixelX, pixelY;
+                    switch (corner) {
+                        case 0: // 左上
+                            pixelX = centerX - i;
+                            pixelY = centerY - j;
+                            break;
+                        case 1: // 右上
+                            pixelX = centerX + i;
+                            pixelY = centerY - j;
+                            break;
+                        case 2: // 左下
+                            pixelX = centerX - i;
+                            pixelY = centerY + j;
+                            break;
+                        case 3: // 右下
+                            pixelX = centerX + i;
+                            pixelY = centerY + j;
+                            break;
+                        default:
+                            continue;
+                    }
+                    guiGraphics.fill(pixelX, pixelY, pixelX + 1, pixelY + 1, color);
+                }
+            }
+        }
+    }
+    
+    /**
+     *
+     * @param guiGraphics GuiGraphics实例
+     * @param x 按钮X坐标
+     * @param y 按钮Y坐标
+     * @param width 按钮宽度
+     * @param height 按钮高度
+     * @param hovered 是否悬停
+     * @param enabled 是否启用
+     */
+    public static void drawRoundedButton(GuiGraphics guiGraphics, int x, int y, int width, int height, boolean hovered, boolean enabled) {
+        int radius = Math.min(8, Math.min(width / 4, height / 4)); // 增大圆角半径
+        
+        int backgroundColor, borderColor, shadowColor;
+        
+        if (!enabled) {
+            // 禁用状态：更暗的灰色
+            backgroundColor = 0x50202020;
+            borderColor = 0x80404040;
+            shadowColor = 0x00000000;
+        } else if (hovered) {
+            // 悬停状态：带蓝色调的深色半透明+发光边框
+            backgroundColor = 0x90404050;
+            borderColor = 0xFFa0a0ff;
+            shadowColor = 0x40a0a0ff;
+        } else {
+            // 正常状态深色半透明
+            backgroundColor = 0x80252525;
+            borderColor = 0xB0555555;
+            shadowColor = 0x30000000; // 轻微阴影
+        }
+        if (shadowColor != 0x00000000) {
+            drawRoundedRect(guiGraphics, x + 1, y + 1, width, height, radius, shadowColor);
+        }
+        drawRoundedRect(guiGraphics, x, y, width, height, radius, backgroundColor);
+        drawRoundedRectBorder(guiGraphics, x, y, width, height, radius, borderColor);
+        if (hovered && enabled) {
+            int innerGlowColor = 0x20ffffff;
+            drawRoundedRect(guiGraphics, x + 1, y + 1, width - 2, height - 2, radius - 1, innerGlowColor);
+        }
+    }
+
+    private static void drawRoundedRectBorder(GuiGraphics guiGraphics, int x, int y, int width, int height, int radius, int color) {
+        guiGraphics.fill(x + radius, y, x + width - radius, y + 1, color);
+        guiGraphics.fill(x + radius, y + height - 1, x + width - radius, y + height, color);
+        guiGraphics.fill(x, y + radius, x + 1, y + height - radius, color);
+        guiGraphics.fill(x + width - 1, y + radius, x + width, y + height - radius, color);
+        drawCornerBorder(guiGraphics, x + radius, y + radius, radius, color, 0);
+        drawCornerBorder(guiGraphics, x + width - radius, y + radius, radius, color, 1);
+        drawCornerBorder(guiGraphics, x + radius, y + height - radius, radius, color, 2);
+        drawCornerBorder(guiGraphics, x + width - radius, y + height - radius, radius, color, 3);
+    }
+    
+    private static void drawCornerBorder(GuiGraphics guiGraphics, int centerX, int centerY, int radius, int color, int corner) {
+        for (int angle = 0; angle <= 90; angle += 2) {
+            double rad = Math.toRadians(angle);
+            int offsetX = (int) (Math.cos(rad) * radius);
+            int offsetY = (int) (Math.sin(rad) * radius);
+            
+            int pixelX, pixelY;
+            switch (corner) {
+                case 0: // 左上
+                    pixelX = centerX - offsetX;
+                    pixelY = centerY - offsetY;
+                    break;
+                case 1: // 右上
+                    pixelX = centerX + offsetX;
+                    pixelY = centerY - offsetY;
+                    break;
+                case 2: // 左下
+                    pixelX = centerX - offsetX;
+                    pixelY = centerY + offsetY;
+                    break;
+                case 3: // 右下
+                    pixelX = centerX + offsetX;
+                    pixelY = centerY + offsetY;
+                    break;
+                default:
+                    continue;
+            }
+            guiGraphics.fill(pixelX, pixelY, pixelX + 1, pixelY + 1, color);
+        }
     }
 }
