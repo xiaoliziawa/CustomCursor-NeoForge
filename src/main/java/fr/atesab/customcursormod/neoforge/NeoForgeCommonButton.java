@@ -6,7 +6,6 @@ import fr.atesab.customcursormod.common.handler.CommonText;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.render.state.GuiRenderState;
 
 public class NeoForgeCommonButton extends CommonButton {
 	
