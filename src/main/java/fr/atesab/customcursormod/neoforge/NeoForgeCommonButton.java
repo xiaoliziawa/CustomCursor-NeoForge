@@ -9,7 +9,6 @@ import net.minecraft.client.gui.components.Button;
 
 public class NeoForgeCommonButton extends CommonButton {
 	
-	// 自定义Button类，覆盖render方法
 	public static class CustomButton extends Button {
 		private final NeoForgeCommonButton parent;
 		
@@ -23,38 +22,29 @@ public class NeoForgeCommonButton extends CommonButton {
 		public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 			if (!visible) return;
 			
-			// 检查鼠标是否悬停在按钮上
 			boolean hovered = mouseX >= getX() && mouseY >= getY() && 
 			                  mouseX < getX() + getWidth() && 
 			                  mouseY < getY() + getHeight();
 			
-			// 自定义按钮背景
 			NeoForgeGuiUtils.drawRoundedButton(guiGraphics, getX(), getY(), 
 			                                  getWidth(), getHeight(), 
 			                                  hovered, active);
-			// 绘制按钮文本
 			String text = getMessage().getString();
 			Minecraft minecraft = Minecraft.getInstance();
 			int textColor;
 			
 			if (!active) {
-				// 禁用状态：暗灰色
 				textColor = 0xFF404040;
 			} else if (hovered) {
-				// 悬停状态：亮蓝白色
 				textColor = 0xFFe6e6ff;
 			} else {
-				// 正常状态：明亮的浅灰色
 				textColor = 0xFFe0e0e0;
 			}
-			// 计算文本居中位置
 			int textX = getX() + (getWidth() - minecraft.font.width(text)) / 2;
 			int textY = getY() + (getHeight() - minecraft.font.lineHeight) / 2;
-			// 绘制文本阴影
 			if (active) {
 				guiGraphics.drawString(minecraft.font, text, textX + 1, textY + 1, 0x80000000);
 			}
-			// 绘制文本
 			guiGraphics.drawString(minecraft.font, text, textX, textY, textColor);
 		}
 	}
@@ -66,7 +56,6 @@ public class NeoForgeCommonButton extends CommonButton {
 	}
 
 	public NeoForgeCommonButton(Button handle) {
-		// 这个构造函数不应该被使用，因为我们需要自定义Button
 		throw new UnsupportedOperationException("Use NeoForgeCommonButton(CommonButtonObject) constructor instead");
 	}
 
