@@ -19,6 +19,7 @@ import fr.atesab.customcursormod.common.handler.TranslationCommonText;
 import fr.atesab.customcursormod.common.utils.Color;
 import fr.atesab.customcursormod.common.utils.I18n;
 import fr.atesab.customcursormod.common.utils.MathHelper;
+import fr.atesab.customcursormod.neoforge.NeoForgeCommonScreen;
 import fr.atesab.customcursormod.neoforge.NeoForgeCommonTextField;
 
 public class GuiCursorConfig extends ScreenListener {
@@ -71,8 +72,21 @@ public class GuiCursorConfig extends ScreenListener {
 		screen.drawRightString(stack, I18n.get("cursormod.config.size") + " : ", cursorSize.getXPosition(),
 				cursorSize.getYPosition() + cursorSize.getHeight() / 2 - gutils.fontHeight() / 2, Color.WHITE);
 		if (syncImageSize()) {
+			// 绘制预览区域背景
 			gutils.drawGradientRect(stack, screen.getBlitOffset(), width / 2 + 36, height / 2 - 64, width / 2 + 164,
 					height / 2 + 64, -1072689136, -804253680);
+			
+			// 在预览区域周围绘制一个方框
+			if (screen instanceof fr.atesab.customcursormod.neoforge.NeoForgeCommonScreen) {
+				fr.atesab.customcursormod.neoforge.NeoForgeCommonScreen neoScreen = (fr.atesab.customcursormod.neoforge.NeoForgeCommonScreen)screen;
+				net.minecraft.client.gui.GuiGraphics guiGraphics = neoScreen.getHandle().getCurrentGuiGraphics();
+				if (guiGraphics != null) {
+					// 绘制黑色透明填充背景
+					int bgColor = 0x80000000; // 半透明黑色
+					guiGraphics.fill(width / 2 + 34, height / 2 - 66, width / 2 + 166, height / 2 + 66, bgColor);
+				}
+			}
+			
 			cursorConfig.getResourceLocation().setShaderTexture();
 			// 只渲染第一帧，参数：位置, UV起始, UV尺寸, 渲染尺寸, 纹理总尺寸
 			gutils.drawScaledCustomSizeModalRect(width / 2 + 36, height / 2 - 64, 0, 0, imageWidth, imageHeight, 128,
@@ -113,10 +127,18 @@ public class GuiCursorConfig extends ScreenListener {
 		cursorSize.setEnable(true);
 		
 		// Set initial focus to null
-		((NeoForgeCommonTextField)xhotspot).handle.setFocused(false);
-		((NeoForgeCommonTextField)yhotspot).handle.setFocused(false);
-		((NeoForgeCommonTextField)cursorLocation).handle.setFocused(false);
-		((NeoForgeCommonTextField)cursorSize).handle.setFocused(false);
+		if (xhotspot instanceof fr.atesab.customcursormod.neoforge.NeoForgeCommonTextField) {
+			((fr.atesab.customcursormod.neoforge.NeoForgeCommonTextField)xhotspot).handle.setFocused(false);
+		}
+		if (yhotspot instanceof fr.atesab.customcursormod.neoforge.NeoForgeCommonTextField) {
+			((fr.atesab.customcursormod.neoforge.NeoForgeCommonTextField)yhotspot).handle.setFocused(false);
+		}
+		if (cursorLocation instanceof fr.atesab.customcursormod.neoforge.NeoForgeCommonTextField) {
+			((fr.atesab.customcursormod.neoforge.NeoForgeCommonTextField)cursorLocation).handle.setFocused(false);
+		}
+		if (cursorSize instanceof fr.atesab.customcursormod.neoforge.NeoForgeCommonTextField) {
+			((fr.atesab.customcursormod.neoforge.NeoForgeCommonTextField)cursorSize).handle.setFocused(false);
+		}
 		
 		updateCursorValues(cursorConfig);
 		selectZone = SelectZone.create(width / 2 + 36, height / 2 - 64, 128, 128);
@@ -141,26 +163,42 @@ public class GuiCursorConfig extends ScreenListener {
 		boolean handled = false;
 		
 		// Reset all text fields focus
-		((NeoForgeCommonTextField)xhotspot).handle.setFocused(false);
-		((NeoForgeCommonTextField)yhotspot).handle.setFocused(false);
-		((NeoForgeCommonTextField)cursorLocation).handle.setFocused(false);
-		((NeoForgeCommonTextField)cursorSize).handle.setFocused(false);
+		if (xhotspot instanceof fr.atesab.customcursormod.neoforge.NeoForgeCommonTextField) {
+			((fr.atesab.customcursormod.neoforge.NeoForgeCommonTextField)xhotspot).handle.setFocused(false);
+		}
+		if (yhotspot instanceof fr.atesab.customcursormod.neoforge.NeoForgeCommonTextField) {
+			((fr.atesab.customcursormod.neoforge.NeoForgeCommonTextField)yhotspot).handle.setFocused(false);
+		}
+		if (cursorLocation instanceof fr.atesab.customcursormod.neoforge.NeoForgeCommonTextField) {
+			((fr.atesab.customcursormod.neoforge.NeoForgeCommonTextField)cursorLocation).handle.setFocused(false);
+		}
+		if (cursorSize instanceof fr.atesab.customcursormod.neoforge.NeoForgeCommonTextField) {
+			((fr.atesab.customcursormod.neoforge.NeoForgeCommonTextField)cursorSize).handle.setFocused(false);
+		}
 		
 		// Handle text field clicks
 		if (xhotspot.mouseClicked(mouseX, mouseY, mouseButton)) {
-			((NeoForgeCommonTextField)xhotspot).handle.setFocused(true);
+			if (xhotspot instanceof fr.atesab.customcursormod.neoforge.NeoForgeCommonTextField) {
+				((fr.atesab.customcursormod.neoforge.NeoForgeCommonTextField)xhotspot).handle.setFocused(true);
+			}
 			handled = true;
 		}
 		if (yhotspot.mouseClicked(mouseX, mouseY, mouseButton)) {
-			((NeoForgeCommonTextField)yhotspot).handle.setFocused(true);
+			if (yhotspot instanceof fr.atesab.customcursormod.neoforge.NeoForgeCommonTextField) {
+				((fr.atesab.customcursormod.neoforge.NeoForgeCommonTextField)yhotspot).handle.setFocused(true);
+			}
 			handled = true;
 		}
 		if (cursorLocation.mouseClicked(mouseX, mouseY, mouseButton)) {
-			((NeoForgeCommonTextField)cursorLocation).handle.setFocused(true);
+			if (cursorLocation instanceof fr.atesab.customcursormod.neoforge.NeoForgeCommonTextField) {
+				((fr.atesab.customcursormod.neoforge.NeoForgeCommonTextField)cursorLocation).handle.setFocused(true);
+			}
 			handled = true;
 		}
 		if (cursorSize.mouseClicked(mouseX, mouseY, mouseButton)) {
-			((NeoForgeCommonTextField)cursorSize).handle.setFocused(true);
+			if (cursorSize instanceof fr.atesab.customcursormod.neoforge.NeoForgeCommonTextField) {
+				((fr.atesab.customcursormod.neoforge.NeoForgeCommonTextField)cursorSize).handle.setFocused(true);
+			}
 			handled = true;
 		}
 		
