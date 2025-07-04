@@ -12,6 +12,7 @@ import fr.atesab.customcursormod.common.handler.TranslationCommonText;
 import fr.atesab.customcursormod.common.handler.CommonScreen.ScreenListener;
 import fr.atesab.customcursormod.common.utils.Color;
 import fr.atesab.customcursormod.common.utils.I18n;
+import fr.atesab.customcursormod.neoforge.NeoForgeGuiUtils;
 
 public class GuiConfig extends ScreenListener {
 	public static CommonScreen create(CommonScreen parent) {
@@ -57,14 +58,7 @@ public class GuiConfig extends ScreenListener {
 	@Override
 	public void render(CommonMatrixStack stack, int mouseX, int mouseY, float partialTicks) {
 		getScreen().renderDefaultBackground(stack);
-		getScreen().drawCenterString(stack, CursorMod.MOD_NAME, width / 2f, height / 2f - 60f, Color.ORANGE, 2.5F);
-
-		getScreen().drawRightString(stack, CursorMod.getInstance().getType().toString() + " - " + CursorMod.MOD_VERSION, width - 5,
-				height - GuiUtils.get().fontHeight() * 3 - 9, 0xffffffff);
-		getScreen().drawRightString(stack, I18n.get("cursormod.licence", CursorMod.MOD_LICENCE), width - 5,
-				height - GuiUtils.get().fontHeight() * 2 - 7, 0xffffffff);
-		getScreen().drawRightString(stack, I18n.get("cursormod.authors", CursorMod.MOD_AUTHORS), width - 5,
-				height - GuiUtils.get().fontHeight() - 5, 0xffffffff);
+		((NeoForgeGuiUtils)GuiUtils.get()).drawConfigTitle(stack, getScreen(), width, height);
 		super.render(stack, mouseX, mouseY, partialTicks);
 	}
 }

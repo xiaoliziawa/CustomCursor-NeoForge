@@ -21,6 +21,7 @@ import fr.atesab.customcursormod.common.utils.I18n;
 import fr.atesab.customcursormod.common.utils.MathHelper;
 import fr.atesab.customcursormod.neoforge.NeoForgeCommonScreen;
 import fr.atesab.customcursormod.neoforge.NeoForgeCommonTextField;
+import fr.atesab.customcursormod.neoforge.NeoForgeGuiUtils;
 
 public class GuiCursorConfig extends ScreenListener {
 	public static CommonScreen create(CommonScreen parent, CursorType type, CursorConfig cursorConfig,
@@ -61,6 +62,8 @@ public class GuiCursorConfig extends ScreenListener {
 	public void render(CommonMatrixStack stack, int mouseX, int mouseY, float partialTicks) {
 		CommonScreen screen = getScreen();
 		GuiUtils gutils = GuiUtils.get();
+		NeoForgeGuiUtils neoForgeGuiUtils = (NeoForgeGuiUtils)gutils;
+		
 		screen.renderDefaultBackground(stack);
 		screen.drawCenterString(stack, type.getName(), width / 2 - 74, height / 2 - 41 - 21, Color.ORANGE, 2);
 		screen.drawRightString(stack, I18n.get("cursormod.config.xhotspot") + " : ", xhotspot.getXPosition(),
@@ -72,35 +75,24 @@ public class GuiCursorConfig extends ScreenListener {
 		screen.drawRightString(stack, I18n.get("cursormod.config.size") + " : ", cursorSize.getXPosition(),
 				cursorSize.getYPosition() + cursorSize.getHeight() / 2 - gutils.fontHeight() / 2, Color.WHITE);
 		if (syncImageSize()) {
-			// 绘制预览区域背景
-			gutils.drawGradientRect(stack, screen.getBlitOffset(), width / 2 + 36, height / 2 - 64, width / 2 + 164,
-					height / 2 + 64, -1072689136, -804253680);
-			
-			// 在预览区域周围绘制一个方框
-			if (screen instanceof fr.atesab.customcursormod.neoforge.NeoForgeCommonScreen) {
-				fr.atesab.customcursormod.neoforge.NeoForgeCommonScreen neoScreen = (fr.atesab.customcursormod.neoforge.NeoForgeCommonScreen)screen;
-				net.minecraft.client.gui.GuiGraphics guiGraphics = neoScreen.getHandle().getCurrentGuiGraphics();
-				if (guiGraphics != null) {
-					// 绘制黑色透明填充背景
-					int bgColor = 0x80000000; // 半透明黑色
-					guiGraphics.fill(width / 2 + 34, height / 2 - 66, width / 2 + 166, height / 2 + 66, bgColor);
-				}
-			}
+			// 使用NeoForgeGuiUtils中的方法绘制预览区域
+			neoForgeGuiUtils.drawPreviewArea(stack, screen, width / 2 + 36, height / 2 - 64, 128, 128);
 			
 			cursorConfig.getResourceLocation().setShaderTexture();
 			// 只渲染第一帧，参数：位置, UV起始, UV尺寸, 渲染尺寸, 纹理总尺寸
 			gutils.drawScaledCustomSizeModalRect(width / 2 + 36, height / 2 - 64, 0, 0, imageWidth, imageHeight, 128,
 					128, imageWidth, totalImageHeight, 0xffffffff, true);
 			if (cursorConfig.getxHotSpot() >= 0 && cursorConfig.getxHotSpot() < imageWidth
-					&& cursorConfig.getyHotSpot() >= 0 && cursorConfig.getyHotSpot() < imageHeight)
-				screen.drawCenterString(stack, "+",
+					&& cursorConfig.getyHotSpot() >= 0 && cursorConfig.getyHotSpot() < imageHeight) {
+				// 使用NeoForgeGuiUtils中的方法绘制热点
+				neoForgeGuiUtils.drawCursorHotspot(stack, screen, 
 						width / 2 + 36 + ((int) (((float) cursorConfig.getxHotSpot()) * 128F / (float) imageWidth)),
-						height / 2 - 64 + ((int) (((float) cursorConfig.getyHotSpot()) * 128F / (float) imageHeight))
-								- gutils.fontHeight() / 2,
-						Color.WHITE);
-			if (numImage > 1)
-				screen.drawCenterString(stack, "(" + I18n.get("cursormod.gui.animate") + ")", width / 2 + 100,
-						height / 2 + 64 + 1, Color.WHITE);
+						height / 2 - 64 + ((int) (((float) cursorConfig.getyHotSpot()) * 128F / (float) imageHeight)));
+			}
+			if (numImage > 1) {
+				// 使用NeoForgeGuiUtils中的方法绘制动画提示
+				neoForgeGuiUtils.drawAnimationText(stack, screen, width / 2 + 100, height / 2 + 64 + 1);
+			}
 			selectZone.setEnable(true);
 		} else {
 			screen.drawCenterString(stack, I18n.get("cursormod.gui.error"), width / 2 + 100,
