@@ -87,20 +87,16 @@ public class NeoForgeGuiSelectZone extends SelectZone implements GuiEventListene
 		this.enable = enable;
 	}
 
-	// 新版本 API: mouseClicked 现在接受 MouseButtonEvent 和 isDoubleClick 参数
 	@Override
 	public boolean mouseClicked(MouseButtonEvent event, boolean isDoubleClick) {
-		// 调用父类的旧版本方法
 		return super.mouseClicked(event.x(), event.y(), event.button());
 	}
 
-	// 新版本 API: mouseReleased 现在只接受 MouseButtonEvent 参数
 	@Override
 	public boolean mouseReleased(MouseButtonEvent event) {
 		return false;
 	}
 
-	// 新版本 API: mouseDragged 现在接受 MouseButtonEvent 和鼠标位置参数
 	@Override
 	public boolean mouseDragged(MouseButtonEvent event, double mouseX, double mouseY) {
 		return false;
@@ -111,20 +107,16 @@ public class NeoForgeGuiSelectZone extends SelectZone implements GuiEventListene
 		return false;
 	}
 
-	// 新版本 API: keyPressed 现在接受 KeyEvent 参数
 	@Override
 	public boolean keyPressed(KeyEvent event) {
-		// 调用父类的旧版本方法
 		return super.keyPressed(event.key(), event.scancode(), event.modifiers());
 	}
 
-	// 新版本 API: keyReleased 现在接受 KeyEvent 参数
 	@Override
 	public boolean keyReleased(KeyEvent event) {
 		return false;
 	}
 
-	// 新版本 API: charTyped 现在接受 CharacterEvent 参数
 	@Override
 	public boolean charTyped(CharacterEvent event) {
 		// 调用父类的旧版本方法
@@ -160,6 +152,5 @@ public class NeoForgeGuiSelectZone extends SelectZone implements GuiEventListene
 
 	@Override
 	public void mouseMoved(double mouseX, double mouseY) {
-		// 默认实现
 	}
 }

@@ -121,13 +121,8 @@ public class NeoForgeCommonScreen extends CommonScreen {
 			return font;
 		}
 
-		/**
-		 * 渲染默认背景（背景纹理 + 半透明遮罩）
-		 */
 		public void renderDefaultBackground(GuiGraphics guiGraphics) {
-			// 渲染背景纹理
 			this.renderMenuBackground(guiGraphics);
-			// 渲染半透明遮罩
 			this.renderTransparentBackground(guiGraphics);
 		}
 	}

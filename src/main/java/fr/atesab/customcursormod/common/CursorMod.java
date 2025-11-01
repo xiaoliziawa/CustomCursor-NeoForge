@@ -74,12 +74,7 @@ public class CursorMod {
 		applyCursor();
 	}
 
-	/**
-	 * 强制应用当前光标（即使类型没有改变）
-	 * 用于防止 Minecraft 重置光标为系统默认光标
-	 */
 	public void applyCursor() {
-		// 检查是否已经初始化
 		if (windowHandle == 0 || cursors == null || currentCursorType == null) {
 			return;
 		}
@@ -91,7 +86,6 @@ public class CursorMod {
 				GLFW.glfwSetCursor(windowHandle, cursorPtr);
 			}
 		} catch (Exception e) {
-			// 静默处理异常，避免在初始化阶段崩溃
 		}
 	}
 
