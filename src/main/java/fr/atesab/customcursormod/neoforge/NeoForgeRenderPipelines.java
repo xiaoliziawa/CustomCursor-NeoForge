@@ -12,6 +12,8 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterRenderPipelinesEvent;
 
+import java.util.function.Supplier;
+
 @EventBusSubscriber(value = Dist.CLIENT, modid = "customcursor")
 public class NeoForgeRenderPipelines {
     public static final RenderPipeline.Snippet CURSOR_SNIPPET = RenderPipeline.builder(RenderPipelines.GUI_TEXTURED_SNIPPET)
@@ -23,14 +25,14 @@ public class NeoForgeRenderPipelines {
             .withDepthTestFunction(DepthTestFunction.NO_DEPTH_TEST)
             .buildSnippet();
 
-    public static RenderPipeline CURSOR;
+    public static Supplier<RenderPipeline> CURSOR;
 
     @SubscribeEvent
     public static void onRegisterRenderPipelines(RegisterRenderPipelinesEvent event) {
-        CURSOR = RenderPipeline.builder(CURSOR_SNIPPET)
+        RenderPipeline pipeline = RenderPipeline.builder(CURSOR_SNIPPET)
                 .withLocation(ResourceLocation.fromNamespaceAndPath("customcursor", "pipeline/cursor"))
                 .build();
-        event.registerPipeline(CURSOR);
+        CURSOR = () -> pipeline;
+        event.registerPipeline(pipeline);
     }
 }
-
