@@ -123,7 +123,6 @@ public class NeoForgeCommonScreen extends CommonScreen {
 
 		public void renderDefaultBackground(GuiGraphics guiGraphics) {
 			this.renderMenuBackground(guiGraphics);
-			this.renderTransparentBackground(guiGraphics);
 		}
 	}
 

@@ -24,8 +24,6 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
@@ -51,7 +49,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
-@OnlyIn(Dist.CLIENT)
 @Mod(CursorMod.MOD_ID)
 public class NeoForgeCursorMod {
     private final CursorMod mod = new CursorMod(GameType.FORGE);
