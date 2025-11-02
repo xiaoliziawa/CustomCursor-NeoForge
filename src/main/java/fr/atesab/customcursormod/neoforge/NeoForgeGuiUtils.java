@@ -267,7 +267,7 @@ public class NeoForgeGuiUtils extends GuiUtils {
      * @param enabled 是否启用
      */
     public static void drawRoundedButton(GuiGraphics guiGraphics, int x, int y, int width, int height, boolean hovered, boolean enabled) {
-        int radius = Math.min(8, Math.min(width / 4, height / 4)); // 增大圆角半径
+        int radius = Math.min(10, Math.min(width / 4, height / 4)); // 增大圆角半径到10
         
         int backgroundColor, borderColor, shadowColor;
         
@@ -287,14 +287,22 @@ public class NeoForgeGuiUtils extends GuiUtils {
             borderColor = 0xB0555555;
             shadowColor = 0x30000000; // 轻微阴影
         }
+        
+        // 绘制阴影（如果有）
         if (shadowColor != 0x00000000) {
-            drawRoundedRect(guiGraphics, x + 1, y + 1, width, height, radius, shadowColor);
+            drawSmoothRoundedRect(guiGraphics, x + 1, y + 1, width, height, radius, shadowColor);
         }
-        drawRoundedRect(guiGraphics, x, y, width, height, radius, backgroundColor);
-        drawRoundedRectBorder(guiGraphics, x, y, width, height, radius, borderColor);
+        
+        // 绘制主背景
+        drawSmoothRoundedRect(guiGraphics, x, y, width, height, radius, backgroundColor);
+        
+        // 绘制边框
+        drawSmoothRoundedRectBorder(guiGraphics, x, y, width, height, radius, 1.5f, borderColor);
+        
+        // 绘制内部发光（悬停时）
         if (hovered && enabled) {
             int innerGlowColor = 0x20ffffff;
-            drawRoundedRect(guiGraphics, x + 1, y + 1, width - 2, height - 2, radius - 1, innerGlowColor);
+            drawSmoothRoundedRect(guiGraphics, x + 2, y + 2, width - 4, height - 4, radius - 2, innerGlowColor);
         }
     }
 
@@ -337,6 +345,218 @@ public class NeoForgeGuiUtils extends GuiUtils {
                     continue;
             }
             guiGraphics.fill(pixelX, pixelY, pixelX + 1, pixelY + 1, color);
+        }
+    }
+    
+    /**
+     * 绘制平滑的圆角矩形（使用抗锯齿）
+     * 
+     * @param guiGraphics GuiGraphics实例
+     * @param x 左上角X坐标
+     * @param y 左上角Y坐标
+     * @param width 宽度
+     * @param height 高度
+     * @param radius 圆角半径
+     * @param color 颜色 (ARGB格式)
+     */
+    private static void drawSmoothRoundedRect(GuiGraphics guiGraphics, int x, int y, int width, int height, int radius, int color) {
+        if (radius <= 0) {
+            guiGraphics.fill(x, y, x + width, y + height, color);
+            return;
+        }
+        
+        radius = Math.min(radius, Math.min(width / 2, height / 2));
+        
+        // 绘制中心矩形区域
+        guiGraphics.fill(x + radius, y, x + width - radius, y + height, color);
+        guiGraphics.fill(x, y + radius, x + radius, y + height - radius, color);
+        guiGraphics.fill(x + width - radius, y + radius, x + width, y + height - radius, color);
+        
+        // 绘制四个角的平滑圆角
+        drawSmoothQuarterCircle(guiGraphics, x + radius, y + radius, radius, color, 0); // 左上
+        drawSmoothQuarterCircle(guiGraphics, x + width - radius, y + radius, radius, color, 1); // 右上
+        drawSmoothQuarterCircle(guiGraphics, x + radius, y + height - radius, radius, color, 2); // 左下
+        drawSmoothQuarterCircle(guiGraphics, x + width - radius, y + height - radius, radius, color, 3); // 右下
+    }
+    
+    /**
+     * 绘制平滑的四分之一圆（使用抗锯齿）
+     * 
+     * @param guiGraphics GuiGraphics实例
+     * @param centerX 圆心X坐标
+     * @param centerY 圆心Y坐标
+     * @param radius 半径
+     * @param color 颜色
+     * @param corner 角落 (0=左上, 1=右上, 2=左下, 3=右下)
+     */
+    private static void drawSmoothQuarterCircle(GuiGraphics guiGraphics, int centerX, int centerY, int radius, int color, int corner) {
+        int alpha = (color >> 24) & 0xFF;
+        int red = (color >> 16) & 0xFF;
+        int green = (color >> 8) & 0xFF;
+        int blue = color & 0xFF;
+        
+        // 遍历可能包含圆的区域
+        for (int i = -radius; i <= radius; i++) {
+            for (int j = -radius; j <= radius; j++) {
+                // 计算当前点到圆心的距离
+                float distance = (float) Math.sqrt(i * i + j * j);
+                
+                // 如果在圆内，计算抗锯齿alpha值
+                if (distance <= radius + 0.5f) {
+                    float antialiasAlpha = 1.0f;
+                    
+                    // 边缘抗锯齿
+                    if (distance > radius - 0.5f) {
+                        antialiasAlpha = radius + 0.5f - distance;
+                    }
+                    
+                    int pixelX, pixelY;
+                    switch (corner) {
+                        case 0: // 左上
+                            if (i > 0 || j > 0) continue;
+                            pixelX = centerX + i;
+                            pixelY = centerY + j;
+                            break;
+                        case 1: // 右上
+                            if (i < 0 || j > 0) continue;
+                            pixelX = centerX + i;
+                            pixelY = centerY + j;
+                            break;
+                        case 2: // 左下
+                            if (i > 0 || j < 0) continue;
+                            pixelX = centerX + i;
+                            pixelY = centerY + j;
+                            break;
+                        case 3: // 右下
+                            if (i < 0 || j < 0) continue;
+                            pixelX = centerX + i;
+                            pixelY = centerY + j;
+                            break;
+                        default:
+                            continue;
+                    }
+                    
+                    // 应用抗锯齿alpha
+                    int finalAlpha = (int) (alpha * antialiasAlpha);
+                    int finalColor = (finalAlpha << 24) | (red << 16) | (green << 8) | blue;
+                    
+                    guiGraphics.fill(pixelX, pixelY, pixelX + 1, pixelY + 1, finalColor);
+                }
+            }
+        }
+    }
+    
+    /**
+     * 绘制平滑的圆角矩形边框
+     * 
+     * @param guiGraphics GuiGraphics实例
+     * @param x 左上角X坐标
+     * @param y 左上角Y坐标
+     * @param width 宽度
+     * @param height 高度
+     * @param radius 圆角半径
+     * @param thickness 边框厚度
+     * @param color 颜色
+     */
+    private static void drawSmoothRoundedRectBorder(GuiGraphics guiGraphics, int x, int y, int width, int height, int radius, float thickness, int color) {
+        if (radius <= 0) {
+            // 绘制普通矩形边框
+            guiGraphics.fill(x, y, x + width, y + (int)thickness, color);
+            guiGraphics.fill(x, y + height - (int)thickness, x + width, y + height, color);
+            guiGraphics.fill(x, y, x + (int)thickness, y + height, color);
+            guiGraphics.fill(x + width - (int)thickness, y, x + width, y + height, color);
+            return;
+        }
+        
+        radius = Math.min(radius, Math.min(width / 2, height / 2));
+        int halfThick = (int)(thickness / 2);
+        
+        // 绘制四条边（直线部分）
+        guiGraphics.fill(x + radius, y, x + width - radius, y + (int)thickness, color); // 上
+        guiGraphics.fill(x + radius, y + height - (int)thickness, x + width - radius, y + height, color); // 下
+        guiGraphics.fill(x, y + radius, x + (int)thickness, y + height - radius, color); // 左
+        guiGraphics.fill(x + width - (int)thickness, y + radius, x + width, y + height - radius, color); // 右
+        
+        // 绘制四个角的平滑圆弧边框
+        drawSmoothQuarterCircleBorder(guiGraphics, x + radius, y + radius, radius, thickness, color, 0); // 左上
+        drawSmoothQuarterCircleBorder(guiGraphics, x + width - radius, y + radius, radius, thickness, color, 1); // 右上
+        drawSmoothQuarterCircleBorder(guiGraphics, x + radius, y + height - radius, radius, thickness, color, 2); // 左下
+        drawSmoothQuarterCircleBorder(guiGraphics, x + width - radius, y + height - radius, radius, thickness, color, 3); // 右下
+    }
+    
+    /**
+     * 绘制平滑的四分之一圆边框
+     * 
+     * @param guiGraphics GuiGraphics实例
+     * @param centerX 圆心X坐标
+     * @param centerY 圆心Y坐标
+     * @param radius 半径
+     * @param thickness 边框厚度
+     * @param color 颜色
+     * @param corner 角落 (0=左上, 1=右上, 2=左下, 3=右下)
+     */
+    private static void drawSmoothQuarterCircleBorder(GuiGraphics guiGraphics, int centerX, int centerY, int radius, float thickness, int color, int corner) {
+        int alpha = (color >> 24) & 0xFF;
+        int red = (color >> 16) & 0xFF;
+        int green = (color >> 8) & 0xFF;
+        int blue = color & 0xFF;
+        
+        float innerRadius = radius - thickness;
+        
+        // 遍历可能包含圆环的区域
+        for (int i = -radius - 1; i <= radius + 1; i++) {
+            for (int j = -radius - 1; j <= radius + 1; j++) {
+                float distance = (float) Math.sqrt(i * i + j * j);
+                
+                // 如果在圆环内
+                if (distance >= innerRadius - 0.5f && distance <= radius + 0.5f) {
+                    float antialiasAlpha = 1.0f;
+                    
+                    // 外边缘抗锯齿
+                    if (distance > radius - 0.5f) {
+                        antialiasAlpha = Math.min(antialiasAlpha, radius + 0.5f - distance);
+                    }
+                    
+                    // 内边缘抗锯齿
+                    if (distance < innerRadius + 0.5f) {
+                        antialiasAlpha = Math.min(antialiasAlpha, distance - (innerRadius - 0.5f));
+                    }
+                    
+                    if (antialiasAlpha <= 0) continue;
+                    
+                    int pixelX, pixelY;
+                    switch (corner) {
+                        case 0: // 左上
+                            if (i > 0 || j > 0) continue;
+                            pixelX = centerX + i;
+                            pixelY = centerY + j;
+                            break;
+                        case 1: // 右上
+                            if (i < 0 || j > 0) continue;
+                            pixelX = centerX + i;
+                            pixelY = centerY + j;
+                            break;
+                        case 2: // 左下
+                            if (i > 0 || j < 0) continue;
+                            pixelX = centerX + i;
+                            pixelY = centerY + j;
+                            break;
+                        case 3: // 右下
+                            if (i < 0 || j < 0) continue;
+                            pixelX = centerX + i;
+                            pixelY = centerY + j;
+                            break;
+                        default:
+                            continue;
+                    }
+                    
+                    // 应用抗锯齿alpha
+                    int finalAlpha = (int) (alpha * antialiasAlpha);
+                    int finalColor = (finalAlpha << 24) | (red << 16) | (green << 8) | blue;
+                    
+                    guiGraphics.fill(pixelX, pixelY, pixelX + 1, pixelY + 1, finalColor);
+                }
+            }
         }
     }
 }
