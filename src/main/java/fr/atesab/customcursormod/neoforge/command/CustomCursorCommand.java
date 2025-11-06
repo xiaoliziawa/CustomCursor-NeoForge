@@ -6,6 +6,7 @@ import fr.atesab.customcursormod.common.gui.GuiConfigCursorMod;
 import fr.atesab.customcursormod.common.handler.CommonScreen;
 import fr.atesab.customcursormod.neoforge.NeoForgeBasicCommonScreen;
 import fr.atesab.customcursormod.neoforge.NeoForgeCommonScreen;
+import net.minecraft.client.Minecraft;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 
@@ -20,7 +21,7 @@ public class CustomCursorCommand {
 
     private static int openConfigGui(CommandContext<CommandSourceStack> context) {
         
-        net.minecraft.client.Minecraft minecraft = net.minecraft.client.Minecraft.getInstance();
+        Minecraft minecraft = net.minecraft.client.Minecraft.getInstance();
         minecraft.execute(() -> {
             CommonScreen parent = new NeoForgeBasicCommonScreen(minecraft.screen);
             CommonScreen configScreen = GuiConfigCursorMod.create(parent);
