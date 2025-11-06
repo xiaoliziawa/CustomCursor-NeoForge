@@ -7,15 +7,18 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterRenderPipelinesEvent;
 
+import java.util.function.Supplier;
+
 @EventBusSubscriber(value = Dist.CLIENT, modid = "customcursor")
 public class CursorRenderPipelineRegistry {
 
+    public static Supplier<RenderPipeline> CURSOR;
     @SubscribeEvent
     public static void onRegisterRenderPipelines(RegisterRenderPipelinesEvent event) {
         RenderPipeline pipeline = RenderPipeline.builder(NeoForgeRenderPipelines.CURSOR_SNIPPET)
                 .withLocation(ResourceLocation.fromNamespaceAndPath("customcursor", "pipeline/cursor"))
                 .build();
-        NeoForgeRenderPipelines.CURSOR = () -> pipeline;
+        CURSOR = () -> pipeline;
         event.registerPipeline(pipeline);
     }
 }

@@ -16,7 +16,7 @@ public class NeoForgeRenderTypes {
             cursor = RenderType.create(
                     "cursor",
                     2048,
-                    NeoForgeRenderPipelines.CURSOR.get(),
+                    CursorRenderPipelineRegistry.CURSOR.get(),
                     RenderType.CompositeState.builder()
                             .createCompositeState(false)
             );
@@ -30,7 +30,7 @@ public class NeoForgeRenderTypes {
                     resourceLocation -> RenderType.create(
                             "cursor",
                             2048,
-                            NeoForgeRenderPipelines.CURSOR.get(),
+                            CursorRenderPipelineRegistry.CURSOR.get(),
                             RenderType.CompositeState.builder()
                                     .setTextureState(new RenderStateShard.TextureStateShard(resourceLocation, false))
                                     .createCompositeState(false)

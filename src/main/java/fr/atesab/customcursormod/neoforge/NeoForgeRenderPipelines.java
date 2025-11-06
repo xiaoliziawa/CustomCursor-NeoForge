@@ -7,7 +7,6 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.renderer.RenderPipelines;
 
-import java.util.function.Supplier;
 
 public class NeoForgeRenderPipelines {
     public static final RenderPipeline.Snippet CURSOR_SNIPPET = RenderPipeline.builder(RenderPipelines.GUI_TEXTURED_SNIPPET)
@@ -18,6 +17,4 @@ public class NeoForgeRenderPipelines {
             .withVertexFormat(DefaultVertexFormat.POSITION_TEX_COLOR, VertexFormat.Mode.QUADS)
             .withDepthTestFunction(DepthTestFunction.NO_DEPTH_TEST)
             .buildSnippet();
-
-    public static Supplier<RenderPipeline> CURSOR;
 }
