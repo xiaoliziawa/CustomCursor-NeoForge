@@ -29,6 +29,7 @@
     "fabricloader": "${loader_version_range}",
     "minecraft": "${minecraft_version_range}",
     "java": ">=21",
-    "fabric-api": "${fapi_version_range}"
+    "fabric-api": "${fapi_version_range}",
+    "modmenu": ">=16.0.0-rc.1"
   }
 }

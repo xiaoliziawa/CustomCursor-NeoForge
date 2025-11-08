@@ -7,11 +7,9 @@ import fr.atesab.customcursormod.common.cursor.CursorType;
 import fr.atesab.customcursormod.common.cursor.SelectZone;
 import fr.atesab.customcursormod.common.handler.*;
 import fr.atesab.customcursormod.common.utils.I18nHelper;
-import fr.atesab.customcursormod.fabric.command.CustomCursorCommand;
 import fr.atesab.customcursormod.fabric.gui.FabricGuiSelectZone;
 import fr.atesab.customcursormod.fabric.mixin.AbstractContainerScreenAccessor;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
@@ -92,10 +90,6 @@ public class FabricCursorMod implements ClientModInitializer {
                 }
                 return false;
             });
-        });
-
-        ClientCommandRegistrationCallback.EVENT.register((dispatcher, context) -> {
-            CustomCursorCommand.register(dispatcher);
         });
     }
 
