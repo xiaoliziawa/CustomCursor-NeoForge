@@ -1,0 +1,8 @@
+[versions]
+neoforge-range = "[21,)"
+neoforge-fml-range = "[4,)"
+neoforge-game-range = "[1.21.9,1.21.10]"
+
+fabric-range = "*"
+fabric-loader-range = ">=0.17.3"
+fabric-game-range = "~1.21.9"
