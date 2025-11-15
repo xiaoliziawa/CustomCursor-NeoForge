@@ -7,9 +7,11 @@ import fr.atesab.customcursormod.common.cursor.CursorType;
 import fr.atesab.customcursormod.common.cursor.SelectZone;
 import fr.atesab.customcursormod.common.handler.*;
 import fr.atesab.customcursormod.common.utils.I18nHelper;
+import fr.atesab.customcursormod.fabric.command.CustomCursorCommand;
 import fr.atesab.customcursormod.fabric.gui.FabricGuiSelectZone;
 import fr.atesab.customcursormod.fabric.mixin.AbstractContainerScreenAccessor;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
@@ -64,7 +66,13 @@ public class FabricCursorMod implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        ClientTickEvents.START_CLIENT_TICK.register(client -> mod.waiter.tick());
+        // 注册客户端指令
+        ClientCommandRegistrationCallback.EVENT.register(CustomCursorCommand::register);
+
+        ClientTickEvents.START_CLIENT_TICK.register(client -> {
+            mod.waiter.tick();
+            CustomCursorCommand.tick(); // 调用指令的tick方法
+        });
 
         ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
             this.setup();
