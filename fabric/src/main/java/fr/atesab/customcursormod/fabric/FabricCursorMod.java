@@ -66,12 +66,11 @@ public class FabricCursorMod implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        // 注册客户端指令
         ClientCommandRegistrationCallback.EVENT.register(CustomCursorCommand::register);
 
         ClientTickEvents.START_CLIENT_TICK.register(client -> {
             mod.waiter.tick();
-            CustomCursorCommand.tick(); // 调用指令的tick方法
+            CustomCursorCommand.tick();
         });
 
         ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
