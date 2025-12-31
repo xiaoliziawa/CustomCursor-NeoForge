@@ -11,7 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.resources.Identifier;
 
 public class FabricGuiUtils extends GuiUtils {
@@ -92,7 +92,7 @@ public class FabricGuiUtils extends GuiUtils {
         float blueRightBottom = (float) (rightBottomColor & 255) / 255.0F;
 
         MultiBufferSource.BufferSource bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();
-        VertexConsumer vertexBuffer = bufferSource.getBuffer(RenderType.debugQuads());
+        VertexConsumer vertexBuffer = bufferSource.getBuffer(RenderTypes.debugQuads());
 
 
         vertexBuffer.addVertex((float) right, (float) top, zLevel)
