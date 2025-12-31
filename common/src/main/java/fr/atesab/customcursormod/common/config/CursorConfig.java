@@ -11,7 +11,7 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.system.MemoryUtil;
 
-import fr.atesab.customcursormod.common.handler.ResourceLocationCommon;
+import fr.atesab.customcursormod.common.handler.CommonResourceLocation;
 
 public class CursorConfig {
 	public static class CursorConfigStore {
@@ -109,8 +109,8 @@ public class CursorConfig {
 
 	}
 
-	public ResourceLocationCommon getResourceLocation() {
-		return ResourceLocationCommon.create(link);
+	public CommonResourceLocation getResourceLocation() {
+		return CommonResourceLocation.create(link);
 	}
 
 	public int getxHotSpot() {

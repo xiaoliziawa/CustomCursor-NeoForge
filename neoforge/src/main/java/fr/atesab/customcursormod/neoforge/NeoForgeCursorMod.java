@@ -5,12 +5,20 @@ import fr.atesab.customcursormod.common.config.CursorConfig;
 import fr.atesab.customcursormod.common.cursor.CursorClick;
 import fr.atesab.customcursormod.common.cursor.CursorType;
 import fr.atesab.customcursormod.common.cursor.SelectZone;
-import fr.atesab.customcursormod.common.gui.GuiConfig;
+import fr.atesab.customcursormod.common.gui.*;
+import fr.atesab.customcursormod.common.gui.screen.CommonScreen;
+import fr.atesab.customcursormod.common.gui.screen.CommonScreenHandler;
+import fr.atesab.customcursormod.common.gui.text.StringCommonText;
+import fr.atesab.customcursormod.common.gui.text.TranslationCommonText;
+import fr.atesab.customcursormod.common.gui.widget.CommonButton;
+import fr.atesab.customcursormod.common.gui.widget.CommonElement;
+import fr.atesab.customcursormod.common.gui.widget.CommonTextField;
 import fr.atesab.customcursormod.common.handler.*;
 import fr.atesab.customcursormod.common.utils.I18nHelper;
-import fr.atesab.customcursormod.neoforge.NeoForgeCommonScreen.NeoForgeCommonScreenHandler;
 import fr.atesab.customcursormod.neoforge.command.CustomCursorCommand;
+import fr.atesab.customcursormod.neoforge.gui.NeoForgeBasicCommonScreen;
 import fr.atesab.customcursormod.neoforge.gui.NeoForgeGuiSelectZone;
+import fr.atesab.customcursormod.neoforge.utils.NeoForgeRenderTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ActiveTextCollector;
 import net.minecraft.client.gui.components.AbstractButton;
@@ -22,7 +30,6 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.Identifier;
@@ -57,25 +64,22 @@ public class NeoForgeCursorMod {
     private final CursorMod mod = new CursorMod(GameType.FORGE);
 
     static {
-        SelectZone.SUPPLIER.forType(GameType.FORGE,
-                o -> new NeoForgeGuiSelectZone(o.xPosition, o.yPosition, o.width, o.height));
-        GuiUtils.SUPPLIER.forType(GameType.FORGE, NeoForgeGuiUtils::getForge);
-        TranslationCommonText.SUPPLIER.forType(GameType.FORGE,
-                obj -> new NeoForgeTranslationCommonTextImpl(obj.format, obj.args));
-        StringCommonText.SUPPLIER.forType(GameType.FORGE, NeoForgeStringCommonTextImpl::new);
-        ResourceLocationCommon.SUPPLIER.forType(GameType.FORGE, NeoForgeResourceLocationCommon::new);
-        CommonButton.SUPPLIER.forType(GameType.FORGE, NeoForgeCommonButton::new);
-        CommonTextField.SUPPLIER.forType(GameType.FORGE, NeoForgeCommonTextField::new);
-        CommonScreen.SUPPLIER.forType(GameType.FORGE, NeoForgeCommonScreen::new);
+        SelectZone.SUPPLIER.forType(GameType.FORGE, o -> new NeoForgeGuiSelectZone(o.xPosition, o.yPosition, o.width, o.height));
+        GuiUtils.SUPPLIER.forType(GameType.FORGE, GuiUtils::new);
+        TranslationCommonText.SUPPLIER.forType(GameType.FORGE, obj -> new TranslationCommonText(obj.format, obj.args));
+        StringCommonText.SUPPLIER.forType(GameType.FORGE, StringCommonText::new);
+        CommonResourceLocation.SUPPLIER.forType(GameType.FORGE, CommonResourceLocation::new);
+        CommonButton.SUPPLIER.forType(GameType.FORGE, CommonButton::new);
+        CommonTextField.SUPPLIER.forType(GameType.FORGE, CommonTextField::new);
+        CommonScreen.SUPPLIER.forType(GameType.FORGE, CommonScreen::new);
         CommonScreen.SUPPLIER_CURRENT.forType(GameType.FORGE, v -> {
             Screen screen = Minecraft.getInstance().screen;
-            if (screen instanceof NeoForgeCommonScreenHandler) {
-                return ((NeoForgeCommonScreenHandler) screen).getCommonScreen();
+            if (screen instanceof CommonScreenHandler handler) {
+                return handler.getCommonScreen();
             }
             return CommonScreen.createNull();
         });
-        I18nHelper.SUPPLIER.forType(GameType.FORGE,
-                obj -> I18n.get(obj.format, obj.args));
+        I18nHelper.SUPPLIER.forType(GameType.FORGE, obj -> I18n.get(obj.format, obj.args));
     }
 
     public NeoForgeCursorMod(IEventBus eventBus) {
@@ -87,7 +91,7 @@ public class NeoForgeCursorMod {
                     @Override
                     public @NotNull Screen createScreen(@NotNull ModContainer container, @NotNull Screen parent) {
                         CommonScreen screen = GuiConfig.create(new NeoForgeBasicCommonScreen(parent));
-                        return ((NeoForgeCommonScreen) screen).getHandle();
+                        return screen.getHandle();
                     }
                 }
         );
@@ -164,7 +168,7 @@ public class NeoForgeCursorMod {
         Screen gui = ev.getScreen();
         CursorType newCursorType = CursorType.POINTER;
         if (mod.getConfig().dynamicCursor) {
-            if (gui instanceof NeoForgeCommonScreenHandler handle) { // Our menu
+            if (gui instanceof CommonScreenHandler handle) { // Our menu
                 CommonScreen cs = handle.getCommonScreen();
                 for (CommonElement o : cs.childrens) {
                     if (!o.isEnable())
@@ -239,7 +243,7 @@ public class NeoForgeCursorMod {
             }
 
             CommonScreen commonScreen;
-            if (gui instanceof NeoForgeCommonScreenHandler handler) {
+            if (gui instanceof CommonScreenHandler handler) {
                 commonScreen = handler.getCommonScreen();
             } else {
                 commonScreen = new NeoForgeBasicCommonScreen(gui);

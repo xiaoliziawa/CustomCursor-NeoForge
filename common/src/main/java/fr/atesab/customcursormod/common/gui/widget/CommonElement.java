@@ -1,4 +1,6 @@
-package fr.atesab.customcursormod.common.handler;
+package fr.atesab.customcursormod.common.gui.widget;
+
+import fr.atesab.customcursormod.common.handler.CommonMatrixStack;
 
 public interface CommonElement {
 	int getXPosition();

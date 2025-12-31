@@ -1,6 +1,6 @@
 package fr.atesab.customcursormod.common.cursor;
 
-import fr.atesab.customcursormod.common.handler.CommonElement;
+import fr.atesab.customcursormod.common.gui.widget.CommonElement;
 import fr.atesab.customcursormod.common.handler.CommonSupplier;
 
 public abstract class SelectZone implements CommonElement {

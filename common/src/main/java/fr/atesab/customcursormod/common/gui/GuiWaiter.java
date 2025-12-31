@@ -1,6 +1,6 @@
 package fr.atesab.customcursormod.common.gui;
 
-import fr.atesab.customcursormod.common.handler.CommonScreen;
+import fr.atesab.customcursormod.common.gui.screen.CommonScreen;
 
 public class GuiWaiter {
 	private int tick = 0;

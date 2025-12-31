@@ -1,7 +1,7 @@
 package fr.atesab.customcursormod.common.utils;
 
 import fr.atesab.customcursormod.common.handler.CommonSupplier;
-import fr.atesab.customcursormod.common.handler.TranslationCommonText.TranslationObject;
+import fr.atesab.customcursormod.common.gui.text.TranslationCommonText.TranslationObject;
 
 public class I18nHelper {
 	public static final CommonSupplier<TranslationObject, String> SUPPLIER = new CommonSupplier<>(false);

@@ -4,12 +4,11 @@ import fr.atesab.customcursormod.common.CursorMod;
 import fr.atesab.customcursormod.common.config.Configuration;
 import fr.atesab.customcursormod.common.config.CursorConfig;
 import fr.atesab.customcursormod.common.cursor.CursorType;
-import fr.atesab.customcursormod.common.handler.CommonButton;
+import fr.atesab.customcursormod.common.gui.screen.CommonScreen;
+import fr.atesab.customcursormod.common.gui.screen.CommonScreen.ScreenListener;
+import fr.atesab.customcursormod.common.gui.text.TranslationCommonText;
+import fr.atesab.customcursormod.common.gui.widget.CommonButton;
 import fr.atesab.customcursormod.common.handler.CommonMatrixStack;
-import fr.atesab.customcursormod.common.handler.CommonScreen;
-import fr.atesab.customcursormod.common.handler.GuiUtils;
-import fr.atesab.customcursormod.common.handler.TranslationCommonText;
-import fr.atesab.customcursormod.common.handler.CommonScreen.ScreenListener;
 
 public class GuiConfig extends ScreenListener {
 	public static CommonScreen create(CommonScreen parent) {

@@ -5,11 +5,21 @@ import fr.atesab.customcursormod.common.config.CursorConfig;
 import fr.atesab.customcursormod.common.cursor.CursorClick;
 import fr.atesab.customcursormod.common.cursor.CursorType;
 import fr.atesab.customcursormod.common.cursor.SelectZone;
+import fr.atesab.customcursormod.common.gui.*;
+import fr.atesab.customcursormod.common.gui.screen.CommonScreen;
+import fr.atesab.customcursormod.common.gui.screen.CommonScreenHandler;
+import fr.atesab.customcursormod.common.gui.text.StringCommonText;
+import fr.atesab.customcursormod.common.gui.text.TranslationCommonText;
+import fr.atesab.customcursormod.common.gui.widget.CommonButton;
+import fr.atesab.customcursormod.common.gui.widget.CommonElement;
+import fr.atesab.customcursormod.common.gui.widget.CommonTextField;
 import fr.atesab.customcursormod.common.handler.*;
 import fr.atesab.customcursormod.common.utils.I18nHelper;
 import fr.atesab.customcursormod.fabric.command.CustomCursorCommand;
+import fr.atesab.customcursormod.fabric.gui.FabricBasicCommonScreen;
 import fr.atesab.customcursormod.fabric.gui.FabricGuiSelectZone;
 import fr.atesab.customcursormod.fabric.mixin.AbstractContainerScreenAccessor;
+import fr.atesab.customcursormod.fabric.utils.FabricRenderTypes;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
@@ -44,25 +54,22 @@ public class FabricCursorMod implements ClientModInitializer {
     private final CursorMod mod = new CursorMod(GameType.FABRIC);
 
     static {
-        SelectZone.SUPPLIER.forType(GameType.FABRIC,
-                o -> new FabricGuiSelectZone(o.xPosition, o.yPosition, o.width, o.height));
-        GuiUtils.SUPPLIER.forType(GameType.FABRIC, FabricGuiUtils::getFabric);
-        TranslationCommonText.SUPPLIER.forType(GameType.FABRIC,
-                obj -> new FabricTranslationCommonTextImpl(obj.format, obj.args));
-        StringCommonText.SUPPLIER.forType(GameType.FABRIC, FabricStringCommonTextImpl::new);
-        ResourceLocationCommon.SUPPLIER.forType(GameType.FABRIC, FabricResourceLocationCommon::new);
-        CommonButton.SUPPLIER.forType(GameType.FABRIC, FabricCommonButton::new);
-        CommonTextField.SUPPLIER.forType(GameType.FABRIC, FabricCommonTextField::new);
-        CommonScreen.SUPPLIER.forType(GameType.FABRIC, FabricCommonScreen::new);
+        SelectZone.SUPPLIER.forType(GameType.FABRIC, o -> new FabricGuiSelectZone(o.xPosition, o.yPosition, o.width, o.height));
+        GuiUtils.SUPPLIER.forType(GameType.FABRIC, GuiUtils::new);
+        TranslationCommonText.SUPPLIER.forType(GameType.FABRIC, obj -> new TranslationCommonText(obj.format, obj.args));
+        StringCommonText.SUPPLIER.forType(GameType.FABRIC, StringCommonText::new);
+        CommonResourceLocation.SUPPLIER.forType(GameType.FABRIC, CommonResourceLocation::new);
+        CommonButton.SUPPLIER.forType(GameType.FABRIC, CommonButton::new);
+        CommonTextField.SUPPLIER.forType(GameType.FABRIC, CommonTextField::new);
+        CommonScreen.SUPPLIER.forType(GameType.FABRIC, CommonScreen::new);
         CommonScreen.SUPPLIER_CURRENT.forType(GameType.FABRIC, v -> {
             Screen screen = Minecraft.getInstance().screen;
-            if (screen instanceof FabricCommonScreen.FabricCommonScreenHandler handler) {
+            if (screen instanceof CommonScreenHandler handler) {
                 return handler.getCommonScreen();
             }
             return CommonScreen.createNull();
         });
-        I18nHelper.SUPPLIER.forType(GameType.FABRIC,
-                obj -> I18n.get(obj.format, obj.args));
+        I18nHelper.SUPPLIER.forType(GameType.FABRIC, obj -> I18n.get(obj.format, obj.args));
     }
 
     @Override
@@ -169,7 +176,7 @@ public class FabricCursorMod implements ClientModInitializer {
 
         CursorType newCursorType = CursorType.POINTER;
         if (mod.getConfig().dynamicCursor) {
-            if (gui instanceof FabricCommonScreen.FabricCommonScreenHandler handle) { // Our menu
+            if (gui instanceof CommonScreenHandler handle) { // Our menu
                 CommonScreen cs = handle.getCommonScreen();
                 for (CommonElement o : cs.childrens) {
                     if (!o.isEnable())
@@ -244,7 +251,7 @@ public class FabricCursorMod implements ClientModInitializer {
             }
 
             CommonScreen commonScreen;
-            if (gui instanceof FabricCommonScreen.FabricCommonScreenHandler handler) {
+            if (gui instanceof CommonScreenHandler handler) {
                 commonScreen = handler.getCommonScreen();
             } else {
                 commonScreen = new FabricBasicCommonScreen(gui);

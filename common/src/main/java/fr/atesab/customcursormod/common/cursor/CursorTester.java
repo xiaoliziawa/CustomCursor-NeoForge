@@ -1,6 +1,6 @@
 package fr.atesab.customcursormod.common.cursor;
 
-import fr.atesab.customcursormod.common.handler.CommonScreen;
+import fr.atesab.customcursormod.common.gui.screen.CommonScreen;
 
 @FunctionalInterface
 public interface CursorTester {

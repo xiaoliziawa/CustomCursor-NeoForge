@@ -1,8 +1,8 @@
 package fr.atesab.customcursormod.common.cursor;
 
 import fr.atesab.customcursormod.common.config.CursorConfig;
-import fr.atesab.customcursormod.common.handler.CommonText;
-import fr.atesab.customcursormod.common.handler.TranslationCommonText;
+import fr.atesab.customcursormod.common.gui.text.CommonText;
+import fr.atesab.customcursormod.common.gui.text.TranslationCommonText;
 
 /**
  * a basic cursor type

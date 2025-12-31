@@ -3,9 +3,8 @@ package fr.atesab.customcursormod.fabric.command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import fr.atesab.customcursormod.common.gui.GuiConfig;
-import fr.atesab.customcursormod.common.handler.CommonScreen;
-import fr.atesab.customcursormod.fabric.FabricBasicCommonScreen;
-import fr.atesab.customcursormod.fabric.FabricCommonScreen;
+import fr.atesab.customcursormod.common.gui.screen.CommonScreen;
+import fr.atesab.customcursormod.fabric.gui.FabricBasicCommonScreen;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.client.Minecraft;
 import net.minecraft.commands.CommandBuildContext;
@@ -36,8 +35,8 @@ public class CustomCursorCommand {
                 CommonScreen parent = new FabricBasicCommonScreen(minecraft.screen);
                 CommonScreen configScreen = GuiConfig.create(parent);
 
-                if (configScreen instanceof FabricCommonScreen fabricScreen) {
-                    minecraft.setScreen(fabricScreen.getHandle());
+                if (configScreen instanceof CommonScreen screen) {
+                    minecraft.setScreen(screen.getHandle());
                 }
             }
         }

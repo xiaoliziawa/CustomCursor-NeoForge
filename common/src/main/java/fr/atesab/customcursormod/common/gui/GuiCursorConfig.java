@@ -8,20 +8,19 @@ import javax.imageio.ImageIO;
 import fr.atesab.customcursormod.common.config.CursorConfig;
 import fr.atesab.customcursormod.common.cursor.CursorType;
 import fr.atesab.customcursormod.common.cursor.SelectZone;
-import fr.atesab.customcursormod.common.handler.CommonButton;
+import fr.atesab.customcursormod.common.gui.screen.CommonScreen;
+import fr.atesab.customcursormod.common.gui.screen.CommonScreen.ScreenListener;
+import fr.atesab.customcursormod.common.gui.text.TranslationCommonText;
+import fr.atesab.customcursormod.common.gui.widget.CommonButton;
+import fr.atesab.customcursormod.common.gui.widget.CommonTextField;
 import fr.atesab.customcursormod.common.handler.CommonMatrixStack;
-import fr.atesab.customcursormod.common.handler.CommonScreen;
-import fr.atesab.customcursormod.common.handler.CommonScreen.ScreenListener;
-import fr.atesab.customcursormod.common.handler.CommonTextField;
-import fr.atesab.customcursormod.common.handler.GuiUtils;
-import fr.atesab.customcursormod.common.handler.TranslationCommonText;
 import fr.atesab.customcursormod.common.utils.Color;
 import fr.atesab.customcursormod.common.utils.I18nHelper;
 import fr.atesab.customcursormod.common.utils.MathHelper;
 
 public class GuiCursorConfig extends ScreenListener {
 	public static CommonScreen create(CommonScreen parent, CursorType type, CursorConfig cursorConfig,
-			Consumer<CursorConfig> saveCallback) {
+									  Consumer<CursorConfig> saveCallback) {
 		return CommonScreen.create(parent, TranslationCommonText.create("cursormod.gui.cursorList"),
 				new GuiCursorConfig(type, cursorConfig, saveCallback));
 	}

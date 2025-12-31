@@ -1,27 +1,37 @@
 package fr.atesab.customcursormod.common.handler;
 
-public interface CommonMatrixStack {
-	<T> T getHandle();
+import com.mojang.blaze3d.vertex.PoseStack;
 
-	void scale(float x, float y, float z);
+public class CommonMatrixStack extends BasicHandler<PoseStack> {
+	public CommonMatrixStack(PoseStack handle) {
+		super(handle);
+	}
 
-	default void scale(float factor) {
+	public void scale(float x, float y, float z) {
+		handle.scale(x, y, z);
+	}
+
+	public void scale(float factor) {
 		scale(factor, factor, factor);
 	}
 
-	default void scaleInv(float factor) {
+	public void scaleInv(float factor) {
 		scale(1 / factor);
 	}
 
-	default void scaleInv(float x, float y, float z) {
+	public void scaleInv(float x, float y, float z) {
 		scale(1 / x, 1 / y, 1 / z);
 	}
 
-	void setIdentity();
+	public void setIdentity() {
+		handle.setIdentity();
+	}
 
-	void translate(float x, float y, float z);
+	public void translate(float x, float y, float z) {
+		handle.translate(x, y, z);
+	}
 
-	default void translateOposite(float x, float y, float z) {
+	public void translateOposite(float x, float y, float z) {
 		translate(-x, -y, -z);
 	}
 }

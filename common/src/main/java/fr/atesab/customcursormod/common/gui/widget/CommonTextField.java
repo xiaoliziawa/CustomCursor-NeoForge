@@ -1,10 +1,10 @@
-package fr.atesab.customcursormod.neoforge;
+package fr.atesab.customcursormod.common.gui.widget;
 
 import fr.atesab.customcursormod.common.handler.CommonMatrixStack;
-import fr.atesab.customcursormod.common.handler.CommonTextField;
+import fr.atesab.customcursormod.common.handler.CommonSupplier;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.render.state.GuiRenderState;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
@@ -12,14 +12,32 @@ import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.input.MouseButtonInfo;
 import net.minecraft.network.chat.Component;
 
-public class NeoForgeCommonTextField extends CommonTextField {
+public class CommonTextField implements CommonElement {
+	public static class CommonTextFieldObject {
+		public final String value;
+		public final int xPosition;
+		public final int yPosition;
+		public final int width;
+		public final int height;
+
+		private CommonTextFieldObject(String value, int xPosition, int yPosition, int width, int height) {
+			this.value = value;
+			this.xPosition = xPosition;
+			this.yPosition = yPosition;
+			this.width = width;
+			this.height = height;
+		}
+	}
+
 	public final EditBox handle;
 
-	public NeoForgeCommonTextField(EditBox handle) {
+	public static final CommonSupplier<CommonTextFieldObject, CommonTextField> SUPPLIER = new CommonSupplier<>(false);
+
+	public CommonTextField(EditBox handle) {
 		this.handle = handle;
 	}
 
-	public NeoForgeCommonTextField(CommonTextFieldObject obj) {
+	public CommonTextField(CommonTextFieldObject obj) {
 		this.handle = new EditBox(Minecraft.getInstance().font, obj.xPosition, obj.yPosition, obj.width, obj.height,
 				Component.literal(""));
 		this.handle.visible = true;
@@ -28,10 +46,13 @@ public class NeoForgeCommonTextField extends CommonTextField {
 		this.handle.setBordered(true);
 	}
 
-    @Override
-    public EditBox getHandle() {
-        return handle;
-    }
+	public static CommonTextField create(String value, int xPosition, int yPosition, int width, int height) {
+		return SUPPLIER.fetch(new CommonTextFieldObject(value, xPosition, yPosition, width, height));
+	}
+
+	public EditBox getHandle() {
+		return handle;
+	}
 
 	@Override
 	public int getXPosition() {
@@ -86,22 +107,18 @@ public class NeoForgeCommonTextField extends CommonTextField {
 		handle.setBordered(enable);
 	}
 
-    @Override
 	public void setValue(String value) {
 		handle.setValue(value);
 	}
 
-	@Override
 	public String getValue() {
 		return handle.getValue();
 	}
 
-	@Override
 	public void setMaxLength(int length) {
 		handle.setMaxLength(length);
 	}
 
-	@Override
 	public void setTextColor(int color) {
 		handle.setTextColor(color);
 	}

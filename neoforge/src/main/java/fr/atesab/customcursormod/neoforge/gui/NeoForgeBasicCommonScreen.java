@@ -1,8 +1,8 @@
-package fr.atesab.customcursormod.neoforge;
+package fr.atesab.customcursormod.neoforge.gui;
 
 import fr.atesab.customcursormod.common.handler.CommonMatrixStack;
-import fr.atesab.customcursormod.common.handler.CommonScreen;
-import fr.atesab.customcursormod.common.handler.CommonScreenHandler;
+import fr.atesab.customcursormod.common.gui.screen.CommonScreen;
+import fr.atesab.customcursormod.common.gui.screen.CommonScreenHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 
@@ -10,7 +10,7 @@ public class NeoForgeBasicCommonScreen extends CommonScreen {
 	private final Screen handle;
 
 	public NeoForgeBasicCommonScreen(Screen handle) {
-		super(null);
+		super((CommonScreen) null);
 		this.handle = handle;
 	}
 
