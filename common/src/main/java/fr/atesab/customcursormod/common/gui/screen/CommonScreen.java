@@ -1,9 +1,18 @@
-package fr.atesab.customcursormod.common.handler;
+package fr.atesab.customcursormod.common.gui.screen;
+
+import fr.atesab.customcursormod.common.handler.CommonMatrixStack;
+import fr.atesab.customcursormod.common.gui.text.CommonText;
+import fr.atesab.customcursormod.common.gui.widget.CommonElement;
+import fr.atesab.customcursormod.common.handler.CommonSupplier;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.render.state.GuiRenderState;
+import net.minecraft.network.chat.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class CommonScreen {
+public class CommonScreen {
 	public static class ScreenListener {
 		protected int width;
 		protected int height;
@@ -64,6 +73,28 @@ public abstract class CommonScreen {
 	public static final CommonSupplier<Void, CommonScreen> SUPPLIER_CURRENT = new CommonSupplier<>(false);
 	private static final ScreenListener NULL_LISTENER = new ScreenListener();
 
+	private CommonScreen parent;
+	public final ScreenListener listener;
+	public final List<CommonElement> childrens = new ArrayList<>();
+
+	private final CommonScreenHandler handle;
+
+	public CommonScreen(CommonScreen parent, ScreenListener listener) {
+		this(parent, listener, Component.literal("Config Screen"));
+	}
+
+	public CommonScreen(CommonScreenObject obj) {
+		this(obj.parent, obj.listener, obj.title.getHandle());
+	}
+
+	protected CommonScreen(CommonScreen parent, ScreenListener listener, Component title) {
+		this.parent = parent;
+		this.listener = listener == null ? new ScreenListener() : listener;
+		// attach the screen to this listener
+		this.listener.screen = this;
+		this.handle = new CommonScreenHandler(title, listener);
+	}
+
 	public static CommonScreen create(CommonScreen parent, CommonText title, ScreenListener listener) {
 		return SUPPLIER.fetch(new CommonScreenObject(parent == null ? createNull() : parent, title, listener));
 	}
@@ -74,17 +105,6 @@ public abstract class CommonScreen {
 
 	public static CommonScreen getCurrent() {
 		return SUPPLIER_CURRENT.fetch();
-	}
-
-	private CommonScreen parent;
-	public final ScreenListener listener;
-	public final List<CommonElement> childrens = new ArrayList<>();
-
-	protected CommonScreen(CommonScreen parent, ScreenListener listener) {
-		this.parent = parent;
-		this.listener = listener == null ? new ScreenListener() : listener;
-		// attach the screen to this listener
-		this.listener.screen = this;
 	}
 
 	protected CommonScreen(CommonScreen parent) {
@@ -162,13 +182,27 @@ public abstract class CommonScreen {
 			e.render(stack, mouseX, mouseY, partialTicks);
 	}
 
-	public abstract void renderDefaultBackground(CommonMatrixStack stack);
+	public void renderDefaultBackground(CommonMatrixStack stack) {
+		if (handle.getCurrentGuiGraphics() != null) {
+			handle.renderDefaultBackground(handle.getCurrentGuiGraphics());
+		}
+	}
 
-    public abstract CommonScreenHandler getHandle();
+	public CommonScreenHandler getHandle() {
+		return handle;
+	}
 
-    public abstract void displayScreen();
+	public void displayScreen() {
+		Minecraft.getInstance().setScreen(handle);
+	}
 
-	public abstract int fontWidth(String text);
+	public Component getTitle() {
+		return Component.literal("Config Screen");
+	}
+
+	public int fontWidth(String text) {
+		return handle.getTextRenderer().width(text);
+	}
 
 	public void drawCenterString(CommonMatrixStack stack, String text, int x, int y, int color, float factor) {
 		drawCenterString(stack, text, (float) x, (float) y, color, factor);
@@ -216,7 +250,18 @@ public abstract class CommonScreen {
 		drawString(stack, text, (float) x, (float) y, color);
 	}
 
-	public abstract void drawString(CommonMatrixStack stack, String text, float x, float y, int color);
+	public void drawString(CommonMatrixStack stack, String text, float x, float y, int color) {
+		GuiGraphics guiGraphics = handle.getCurrentGuiGraphics();
+		if (guiGraphics != null) {
+			guiGraphics.drawString(handle.getTextRenderer(), text, (int)x, (int)y, color);
+		} else {
+			GuiGraphics fallbackGraphics = new GuiGraphics(Minecraft.getInstance(),
+					new GuiRenderState(), (int)x, (int)y);
+			fallbackGraphics.drawString(handle.getTextRenderer(), text, (int)x, (int)y, color);
+		}
+	}
 
-	public abstract float getBlitOffset();
+	public float getBlitOffset() {
+		return 0.0F;
+	}
 }

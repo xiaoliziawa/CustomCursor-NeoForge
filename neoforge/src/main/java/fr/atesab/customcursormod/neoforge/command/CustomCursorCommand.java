@@ -3,9 +3,8 @@ package fr.atesab.customcursormod.neoforge.command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import fr.atesab.customcursormod.common.gui.GuiConfig;
-import fr.atesab.customcursormod.common.handler.CommonScreen;
-import fr.atesab.customcursormod.neoforge.NeoForgeBasicCommonScreen;
-import fr.atesab.customcursormod.neoforge.NeoForgeCommonScreen;
+import fr.atesab.customcursormod.common.gui.screen.CommonScreen;
+import fr.atesab.customcursormod.neoforge.gui.NeoForgeBasicCommonScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -25,8 +24,8 @@ public class CustomCursorCommand {
         minecraft.execute(() -> {
             CommonScreen parent = new NeoForgeBasicCommonScreen(minecraft.screen);
             CommonScreen configScreen = GuiConfig.create(parent);
-            if (configScreen instanceof NeoForgeCommonScreen neoForgeScreen) {
-                minecraft.setScreen(neoForgeScreen.getHandle());
+            if (configScreen instanceof CommonScreen screen) {
+                minecraft.setScreen(screen.getHandle());
             }
         });
 

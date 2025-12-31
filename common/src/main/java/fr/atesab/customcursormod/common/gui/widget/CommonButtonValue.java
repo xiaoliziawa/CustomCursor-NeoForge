@@ -1,10 +1,13 @@
-package fr.atesab.customcursormod.common.handler;
+package fr.atesab.customcursormod.common.gui.widget;
+
+import fr.atesab.customcursormod.common.handler.CommonMatrixStack;
+import fr.atesab.customcursormod.common.gui.text.CommonText;
 
 import java.util.function.Consumer;
 
 public class CommonButtonValue<T> extends CommonButton {
 	public static <T> CommonButtonValue<T> create(T value, CommonText message, int xPosition, int yPosition, int width,
-			int height, Consumer<CommonButton> action) {
+												  int height, Consumer<CommonButton> action) {
 		return new CommonButtonValue<>(create(message, xPosition, yPosition, width, height, action), value);
 	}
 
@@ -12,7 +15,8 @@ public class CommonButtonValue<T> extends CommonButton {
 	private T value;
 
 	private CommonButtonValue(CommonButton handle, T value) {
-		this.handle = handle;
+        super(handle.handle.getObject());
+        this.handle = handle;
 		this.value = value;
 	}
 
